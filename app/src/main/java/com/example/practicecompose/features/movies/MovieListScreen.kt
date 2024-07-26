@@ -51,7 +51,7 @@ fun MovieScreen(
     }
 
     ScaffoldCustom(
-        customToolBar = { ToolBarCustom() },
+        customToolBar = { ToolBarCustom(navController = navController) },
         customBottomBar = { BottomNavigationBar(navController) },
         customBody = {
             when (moviesState) {
@@ -69,7 +69,7 @@ fun MovieScreen(
                             MovieCard(title = items.title,
                                 image = items.posterPath,
                                 onClicked = {
-                                    navController.navigate(route = NavigationItem.Home.route)
+                                    navController.navigate(route = NavigationItem.MovieDetail.route)
                                 })
                         }
                     }

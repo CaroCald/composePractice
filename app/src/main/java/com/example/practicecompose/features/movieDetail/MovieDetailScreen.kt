@@ -1,5 +1,4 @@
-package com.example.practicecompose.features.profile
-
+package com.example.practicecompose.features.movieDetail
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -37,7 +36,8 @@ import com.example.practicecompose.features.login.LoginViewModel
 import com.example.practicecompose.navigation.NavigationItem
 
 @Composable
-fun ProfileScreen(navHostController: NavHostController, authViewModel: LoginViewModel = hiltViewModel<LoginViewModel>(),) {
+fun MovieDetailScreen(navHostController: NavHostController,
+                      authViewModel: LoginViewModel = hiltViewModel<LoginViewModel>(),) {
 
     val userState by authViewModel.userState.collectAsState()
 
@@ -45,8 +45,7 @@ fun ProfileScreen(navHostController: NavHostController, authViewModel: LoginView
         authViewModel.getUserInfo()
     }
     ScaffoldCustom(
-        customToolBar = { ToolBarCustom(navController =navHostController ) },
-        customBottomBar = { BottomNavigationBar(navHostController) },
+        customToolBar = { ToolBarCustom(navController = navHostController, hasBackButton = true) },
         customBody = {
             Column(
                 modifier = Modifier
@@ -56,17 +55,9 @@ fun ProfileScreen(navHostController: NavHostController, authViewModel: LoginView
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                Image(
-                    painter = painterResource(id = R.drawable.ic_profile),
-                    contentDescription = ""
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                TextCustom(text = userState.email ?: "")
-                TextCustom(text = userState.id)
-                PrimaryButton(text = stringResource(R.string.close_session), onClick = {
-                    authViewModel.closeSession()
-                    navHostController.navigate(route = NavigationItem.Splash.route)
-                })
+
+                TextCustom(text = "Detalle")
+
             }
         },
         isLoading = false
@@ -75,7 +66,7 @@ fun ProfileScreen(navHostController: NavHostController, authViewModel: LoginView
 @Preview
 @Composable
 fun HomeScreenPreview() {
-    ProfileScreen(
+    MovieDetailScreen(
         navHostController = rememberNavController(),
     )
 }

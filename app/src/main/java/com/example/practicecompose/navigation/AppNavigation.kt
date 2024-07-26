@@ -5,7 +5,8 @@ enum class Screen {
     LOGIN,
     SPLASH,
     MOVIE_LIST,
-    PROFILE
+    PROFILE,
+    MOVIE_DETAIL
 }
 sealed class NavigationItem(val route: String) {
     data object Home : NavigationItem(Screen.HOME.name)
@@ -13,4 +14,5 @@ sealed class NavigationItem(val route: String) {
     data object Splash : NavigationItem(Screen.SPLASH.name)
     data object MovieList : NavigationItem(Screen.MOVIE_LIST.name)
     data object Profile : NavigationItem(Screen.PROFILE.name)
+    data object MovieDetail : NavigationItem(Screen.MOVIE_DETAIL.name)
 }
