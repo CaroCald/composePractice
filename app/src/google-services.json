@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "170009925676",
+    "project_id": "music-5c501",
+    "storage_bucket": "music-5c501.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:170009925676:android:55d20f65ee23c3bc031989",
+        "android_client_info": {
+          "package_name": "com.example.practicecompose"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwMNTNCILyiQ1PlMy-ZZun-f-LzRU2H28"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
