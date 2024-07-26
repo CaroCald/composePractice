@@ -10,9 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.practicecompose.R
 import com.example.practicecompose.commons.components.alerts.CustomAlertDialog
-import com.example.practicecompose.commons.components.bottomBar.BottomBarCustom
 import com.example.practicecompose.commons.components.loading.Loading
-import com.example.practicecompose.commons.components.toolbar.ToolBarCustom
 import com.example.practicecompose.data.remote.CustomError
 
 

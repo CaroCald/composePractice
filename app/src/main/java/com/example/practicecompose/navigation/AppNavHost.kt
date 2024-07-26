@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import com.example.practicecompose.features.home.HomeScreen
 import com.example.practicecompose.features.login.LoginScreen
 import com.example.practicecompose.features.movies.MovieScreen
+import com.example.practicecompose.features.profile.ProfileScreen
 import com.example.practicecompose.features.splash.SplashScreen
 
 @Composable
@@ -33,6 +34,9 @@ fun AppNavHost(
         }
         composable(NavigationItem.MovieList.route) {
             MovieScreen(navController)
+        }
+        composable(NavigationItem.Profile.route) {
+            ProfileScreen(navController)
         }
 
     }

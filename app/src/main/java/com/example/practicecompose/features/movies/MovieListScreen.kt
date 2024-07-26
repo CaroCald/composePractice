@@ -1,13 +1,15 @@
 package com.example.practicecompose.features.movies
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -17,15 +19,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.practicecompose.R
+import coil.compose.AsyncImage
+import com.example.practicecompose.commons.components.bottomBar.BottomNavigationBar
 import com.example.practicecompose.commons.components.scaffold.ScaffoldCustom
 import com.example.practicecompose.commons.components.text.TextCustom
+import com.example.practicecompose.commons.components.toolbar.ToolBarCustom
 import com.example.practicecompose.data.remote.ApiResult
+import com.example.practicecompose.data.remote.constants.Constants
 import com.example.practicecompose.data.remote.models.movies.Result
+import com.example.practicecompose.navigation.NavigationItem
 
 @Composable
 fun MovieScreen(
@@ -44,18 +51,9 @@ fun MovieScreen(
     }
 
     ScaffoldCustom(
+        customToolBar = { ToolBarCustom() },
+        customBottomBar = { BottomNavigationBar(navController) },
         customBody = {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                TextCustom(text = stringResource(R.string.title_welcome))
-                Spacer(modifier = Modifier.height(8.dp))
-            }
-
             when (moviesState) {
                 is ApiResult.Loading -> {
                     isLoading = (moviesState as ApiResult.Loading).isLoading
@@ -64,9 +62,15 @@ fun MovieScreen(
                     isLoading = false
                     val movieList = (moviesState as ApiResult.Success).data.results
                     results = movieList
-                    LazyColumn {
-                        items(movieList) { result ->
-                            TextCustom(text = result.title)
+                    LazyVerticalGrid(columns = GridCells.Fixed(2),
+                        contentPadding = PaddingValues(16.dp)
+                    ) {
+                        items(movieList) { items ->
+                            MovieCard(title = items.title,
+                                image = items.posterPath,
+                                onClicked = {
+                                    navController.navigate(route = NavigationItem.Home.route)
+                                })
                         }
                     }
                 }
@@ -80,4 +84,34 @@ fun MovieScreen(
         isLoading = isLoading,
         hasError = error
     )
+}
+
+@Composable
+fun MovieCard(title: String, image: String, onClicked: () -> Unit) {
+    Column (modifier = Modifier
+        .padding(8.dp)
+        .clickable { onClicked() },
+        horizontalAlignment = Alignment.Start){
+
+        CharacterImg(imgURL = Constants.POSTER_IMAGE_BASE_URL+ image)
+        TextCustom(text = title)
+    }
+}
+
+
+@Composable
+fun CharacterImg(imgURL: String) {
+    Card(
+        shape = RectangleShape,
+        border = BorderStroke(width = 2.dp, color = Color.White),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 6.dp
+        ),
+    ) {
+        AsyncImage(
+            alignment = Alignment.Center,
+            model = imgURL,
+            contentDescription = "Translated description of what the image contains"
+        )
+    }
 }

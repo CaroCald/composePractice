@@ -31,5 +31,7 @@
     <string name="title_welcome">Bienvenido</string>
     <string name="alert_body">Jetpack Compose Alert Dialog</string>
     <string name="error_generic">Error generico</string>
+    <string name="my_profile">Perfil</string>
+    <string name="movie_title">Peliculas</string>
 
 </resources>
