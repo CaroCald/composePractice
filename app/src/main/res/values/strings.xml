@@ -33,5 +33,6 @@
     <string name="error_generic">Error generico</string>
     <string name="my_profile">Perfil</string>
     <string name="movie_title">Peliculas</string>
+    <string name="close_session">Cerrar sesion</string>
 
 </resources>

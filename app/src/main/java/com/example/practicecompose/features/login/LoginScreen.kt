@@ -42,7 +42,6 @@ fun LoginScreen(navController: NavHostController,
     var error by remember { mutableStateOf(Throwable()) }
 
     ScaffoldCustom(
-        customToolBar = { ToolBarCustom() },
         customBody = {
             Column(
                 modifier = Modifier
