@@ -1,13 +1,13 @@
 package com.example.practicecompose.features.movieDetail
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -17,56 +17,72 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.example.practicecompose.R
-import com.example.practicecompose.commons.components.bottomBar.BottomNavigationBar
-import com.example.practicecompose.commons.components.buttons.PrimaryButton
 import com.example.practicecompose.commons.components.scaffold.ScaffoldCustom
 import com.example.practicecompose.commons.components.text.TextCustom
 import com.example.practicecompose.commons.components.toolbar.ToolBarCustom
 import com.example.practicecompose.data.remote.ApiResult
-import com.example.practicecompose.data.remote.models.user.UserResponse
-import com.example.practicecompose.features.login.LoginViewModel
-import com.example.practicecompose.navigation.NavigationItem
+import com.example.practicecompose.data.remote.constants.Constants
+import com.example.practicecompose.data.remote.models.movies.MovieDetail
+import com.example.practicecompose.features.movies.CharacterImg
+import com.example.practicecompose.features.movies.MoviesViewModel
 
 @Composable
 fun MovieDetailScreen(navHostController: NavHostController,
-                      authViewModel: LoginViewModel = hiltViewModel<LoginViewModel>(),) {
+                      id:String,
+                      moviesVieModel: MoviesViewModel = hiltViewModel<MoviesViewModel>(),) {
 
-    val userState by authViewModel.userState.collectAsState()
+    val movieState by moviesVieModel.movieDetailState.collectAsState()
+    var isLoading by remember { mutableStateOf(false) }
+    var error by remember { mutableStateOf<Throwable?>(null) }
+    var results by remember { mutableStateOf(MovieDetail()) }
 
     LaunchedEffect(Unit){
-        authViewModel.getUserInfo()
+        moviesVieModel.getMovieDetail(id)
     }
+
     ScaffoldCustom(
         customToolBar = { ToolBarCustom(navController = navHostController, hasBackButton = true) },
         customBody = {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+            when (movieState) {
+                is ApiResult.Loading -> {
+                    isLoading = (movieState as ApiResult.Loading).isLoading
+                }
+                is ApiResult.Success -> {
+                    isLoading = false
+                    val movieDetail = (movieState as ApiResult.Success).data
+                    results = movieDetail
 
+                    Column(
+                       modifier = Modifier
+                           .padding(20.dp)
+                           .verticalScroll(rememberScrollState())
+                           ,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center) {
+                        TextCustom(text = movieDetail.title)
+                        Box (modifier = Modifier.padding(horizontal = 40.dp, vertical = 10.dp)){
+                            CharacterImg(imgURL = Constants.POSTER_IMAGE_BASE_URL + movieDetail.posterPath)
+                        }
+                        TextCustom(text = movieDetail.overview, textAlign = TextAlign.Center)
+                        Spacer(modifier = Modifier.height(20.dp))
+                        TextCustom(text = movieDetail.releaseDate)
+                        Spacer(modifier = Modifier.height(10.dp))
+                        TextCustom(text = movieDetail.status)
+                    }
 
-                TextCustom(text = "Detalle")
-
+                }
+                is ApiResult.Error -> {
+                    isLoading = false
+                    val exception = (movieState as ApiResult.Error).exception
+                    error = exception
+                }
             }
         },
-        isLoading = false
-    )
-}
-@Preview
-@Composable
-fun HomeScreenPreview() {
-    MovieDetailScreen(
-        navHostController = rememberNavController(),
+        isLoading = isLoading,
+        hasError = error
     )
 }

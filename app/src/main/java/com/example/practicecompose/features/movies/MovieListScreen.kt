@@ -69,7 +69,8 @@ fun MovieScreen(
                             MovieCard(title = items.title,
                                 image = items.posterPath,
                                 onClicked = {
-                                    navController.navigate(route = NavigationItem.MovieDetail.route)
+                                    val path = "${NavigationItem.MovieDetail.route}/${items.id}"
+                                    navController.navigate(route = path)
                                 })
                         }
                     }

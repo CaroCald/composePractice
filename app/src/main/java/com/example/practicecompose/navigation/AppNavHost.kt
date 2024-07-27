@@ -4,8 +4,10 @@ import androidx.navigation.NavHostController
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.practicecompose.features.home.HomeScreen
 import com.example.practicecompose.features.login.LoginScreen
 import com.example.practicecompose.features.movieDetail.MovieDetailScreen
@@ -39,8 +41,13 @@ fun AppNavHost(
         composable(NavigationItem.Profile.route) {
             ProfileScreen(navController)
         }
-        composable(NavigationItem.MovieDetail.route) {
-            MovieDetailScreen(navController)
+        val path = "${NavigationItem.MovieDetail.route}/{movieId}"
+        composable(path,
+            arguments = listOf(navArgument("movieId") { type = NavType.StringType })) {
+            val movieId = it.arguments?.getString("movieId")
+            if (movieId != null) {
+                MovieDetailScreen(navController, movieId)
+            }
         }
 
     }

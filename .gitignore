@@ -1,0 +1,29 @@
+/.gradle/
+*.iml
+.gradle
+.idea
+/local.properties
+/.idea
+/.idea/compiler.xml
+/.idea/misc.xml
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/release
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+/schemas
+# For firebase connection
+google-services.json
+# For google drive api connection
+client_secret.json
+/app/release
+lint-baseline.xml
+/app/build/

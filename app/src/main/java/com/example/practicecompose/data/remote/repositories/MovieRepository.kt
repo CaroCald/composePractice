@@ -2,6 +2,7 @@ package com.example.practicecompose.data.remote.repositories
 
 import com.example.practicecompose.data.remote.ApiResult
 import com.example.practicecompose.data.remote.CustomError
+import com.example.practicecompose.data.remote.models.movies.MovieDetail
 import com.example.practicecompose.data.remote.models.movies.MovieResponse
 import com.example.practicecompose.data.remote.services.MovieService
 import kotlinx.coroutines.flow.Flow
@@ -28,5 +29,20 @@ class MovieRepository @Inject constructor(
         }
     }
 
+    fun movieById(movieId: String): Flow<ApiResult<MovieDetail>> = flow {
+        try {
+            emit(ApiResult.Loading(true))
+            val response = service.getDetail(movieId)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    emit(ApiResult.Success(it))
+                } ?: emit(ApiResult.Error(CustomError.ServerError(message = response.message(), code = response.code())))
+            } else {
+                emit(ApiResult.Error(CustomError.ServerError(message = response.message(), code = response.code())))
+            }
+        } catch (e: Exception) {
+            emit(ApiResult.Error(e))
+        }
+    }
 
 }
