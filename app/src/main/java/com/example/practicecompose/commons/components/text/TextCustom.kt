@@ -19,7 +19,7 @@ fun TextCustom(
     modifier: Modifier? = Modifier,
     style: TextStyle = MaterialTheme.typography.bodyLarge,
     fontWeight: FontWeight? = null,
-    color: Color = Color.Unspecified,
+    color: Color =  MaterialTheme.colorScheme.secondary,
     textAlign: TextAlign? = null,
 ) {
     Text(

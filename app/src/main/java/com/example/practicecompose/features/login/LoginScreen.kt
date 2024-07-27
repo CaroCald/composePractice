@@ -62,8 +62,9 @@ fun LoginScreen(navController: NavHostController,
                         password = it
                     },
                     isPassword = true,)
-                Spacer(modifier = Modifier.height(8.dp))
-                PrimaryButton(text = stringResource(id = R.string.btn_login), onClick = {
+                Spacer(modifier = Modifier.height(20.dp))
+                PrimaryButton(text = stringResource(id = R.string.btn_login),
+                    onClick = {
                     authViewModel.doLogin(UserRequest(email, password))
                 })
             }

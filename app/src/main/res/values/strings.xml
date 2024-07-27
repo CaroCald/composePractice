@@ -27,7 +27,7 @@
     <string name="share_note_as_text">Share Note as Text</string>
     <string name="input_email">Correo electronico</string>
     <string name="input_password">Contraseña</string>
-    <string name="btn_login">Log in</string>
+    <string name="btn_login">Ingresar</string>
     <string name="title_welcome">Bienvenido</string>
     <string name="alert_body">Jetpack Compose Alert Dialog</string>
     <string name="error_generic">Error generico</string>

@@ -63,6 +63,7 @@ fun ProfileScreen(navHostController: NavHostController, authViewModel: LoginView
                 Spacer(modifier = Modifier.height(8.dp))
                 TextCustom(text = userState.email ?: "")
                 TextCustom(text = userState.id)
+                Spacer(modifier = Modifier.height(20.dp))
                 PrimaryButton(text = stringResource(R.string.close_session), onClick = {
                     authViewModel.closeSession()
                     navHostController.navigate(route = NavigationItem.Splash.route)

@@ -1,5 +1,6 @@
 package com.example.practicecompose.data.remote.services
 
+import com.example.practicecompose.data.remote.models.generics.OkResponse
 import com.example.practicecompose.data.remote.models.user.UserFirebase
 import com.example.practicecompose.data.remote.models.user.UserResponse
 import kotlinx.coroutines.flow.Flow
@@ -10,9 +11,6 @@ interface AccountService {
     val currentUserFirebase: Flow<UserFirebase>
 
     fun authenticate(email: String, password: String): Flow<Result<UserResponse>>
-    suspend fun sendRecoveryEmail(email: String)
-    suspend fun createAnonymousAccount()
-    suspend fun linkAccount(email: String, password: String)
-    suspend fun deleteAccount()
-    suspend fun signOut()
+    suspend fun sendRecoveryEmail(email: String): Flow<Result<OkResponse>>
+    suspend fun signOut(): Flow<Result<OkResponse>>
 }

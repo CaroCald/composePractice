@@ -51,7 +51,6 @@ fun MovieScreen(
     }
 
     ScaffoldCustom(
-        customToolBar = { ToolBarCustom(navController = navController) },
         customBottomBar = { BottomNavigationBar(navController) },
         customBody = {
             when (moviesState) {

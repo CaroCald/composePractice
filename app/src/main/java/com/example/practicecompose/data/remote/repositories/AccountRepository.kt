@@ -3,6 +3,7 @@ package com.example.practicecompose.data.remote.repositories
 
 import com.example.practicecompose.commons.utils.ErrorUtils
 import com.example.practicecompose.data.remote.ApiResult
+import com.example.practicecompose.data.remote.models.generics.OkResponse
 import com.example.practicecompose.data.remote.models.user.UserFirebase
 import com.example.practicecompose.data.remote.models.user.UserRequest
 import com.example.practicecompose.data.remote.models.user.UserResponse
@@ -39,7 +40,18 @@ class AccountRepository @Inject constructor(
         return service.currentUserFirebase
     }
 
-    suspend fun closeSession() {
-        return service.signOut()
+    suspend fun closeSession() : Flow<ApiResult<OkResponse>> {
+        return service.signOut() .map { result ->
+            result.fold(
+                onSuccess = { ApiResult.Success(it) },
+                onFailure = {
+                    ErrorUtils.handleException(it)
+                }
+            )
+        }
+            .onStart { emit(ApiResult.Loading(true)) }
+            .catch { error ->
+                emit(ErrorUtils.handleException(error))
+            }
     }
 }

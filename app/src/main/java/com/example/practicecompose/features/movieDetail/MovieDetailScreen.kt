@@ -45,7 +45,9 @@ fun MovieDetailScreen(navHostController: NavHostController,
     }
 
     ScaffoldCustom(
-        customToolBar = { ToolBarCustom(navController = navHostController, hasBackButton = true) },
+        customToolBar = { ToolBarCustom(navController = navHostController,
+            title = "Detalle",
+            hasBackButton = true) },
         customBody = {
             when (movieState) {
                 is ApiResult.Loading -> {

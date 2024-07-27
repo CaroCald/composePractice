@@ -1,36 +1,50 @@
 package com.example.practicecompose.commons.components.bottomBar
 
+import android.annotation.SuppressLint
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Text
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.practicecompose.commons.components.text.TextCustom
 import com.example.practicecompose.navigation.BottomNavigationItem
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun BottomNavigationBar(navController: NavHostController,) {
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination: NavDestination? = navBackStackEntry?.destination
 
-            NavigationBar {
+            NavigationBar(
+                containerColor =  MaterialTheme.colorScheme.onPrimary,
+            ) {
                 BottomNavigationItem().bottomNavigationItems().forEachIndexed { _, navigationItem ->
+                   val selected=navigationItem.route == currentDestination?.route
                     NavigationBarItem(
-                        selected = navigationItem.route == currentDestination?.route,
+
+                        selected = selected,
                         label = {
-                            Text(navigationItem.label)
+                            TextCustom(navigationItem.label, color = if (selected )MaterialTheme.colorScheme.primary  else MaterialTheme.colorScheme.secondary,)
                         },
+
                         icon = {
                             Icon(
                                 navigationItem.icon,
-                                contentDescription = navigationItem.label
+                                contentDescription = navigationItem.label,
+                                tint =  if (selected )MaterialTheme.colorScheme.primary  else MaterialTheme.colorScheme.secondary,
                             )
                         },
+                        colors = NavigationBarItemDefaults.colors(
+
+                            indicatorColor =  MaterialTheme.colorScheme.onPrimary
+                        ),
                         onClick = {
                             navController.navigate(navigationItem.route) {
                                 popUpTo(navController.graph.findStartDestination().id) {

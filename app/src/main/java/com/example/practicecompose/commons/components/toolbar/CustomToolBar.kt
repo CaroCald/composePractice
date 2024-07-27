@@ -14,11 +14,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.navigation.NavHostController
 import com.example.practicecompose.R
+import com.example.practicecompose.commons.components.text.TextCustom
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ToolBarCustom(
-    title: @Composable() (() -> Unit?)? = null,
+    title: String? = null,
     navController: NavHostController,
     hasBackButton: Boolean = false
 ){
@@ -44,9 +45,9 @@ fun ToolBarCustom(
         },
 
         colors = topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
+            containerColor = MaterialTheme.colorScheme.onPrimary,
             titleContentColor = Color.White,
         ),
-        title = { title?.let { it() } }
+        title = { if(title!=null) TextCustom(text = title) }
     )
 }

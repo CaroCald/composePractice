@@ -1,6 +1,5 @@
 package com.example.practicecompose.commons.components.buttons
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
@@ -17,12 +16,11 @@ import com.example.practicecompose.commons.components.text.TextCustom
 fun PrimaryButton(
      text: String,
     onClick: () -> Unit,
-    modifier: Modifier? = Modifier
+    modifier: Modifier = Modifier.width(300.dp)
+        .height(54.dp)
 ) {
     Button(
-        modifier = modifier ?: Modifier
-            .width(300.dp)
-            .height(54.dp),
+        modifier = modifier,
         onClick = onClick
     ) {
         TextCustom(
