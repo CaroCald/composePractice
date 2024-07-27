@@ -11,6 +11,6 @@ interface AccountService {
     val currentUserFirebase: Flow<UserFirebase>
 
     fun authenticate(email: String, password: String): Flow<Result<UserResponse>>
-    suspend fun sendRecoveryEmail(email: String): Flow<Result<OkResponse>>
-    suspend fun signOut(): Flow<Result<OkResponse>>
+    fun sendRecoveryEmail(email: String): Flow<Result<OkResponse>>
+    fun signOut(): Flow<Result<OkResponse>>
 }

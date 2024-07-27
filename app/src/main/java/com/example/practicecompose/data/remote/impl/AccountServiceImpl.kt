@@ -41,7 +41,7 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : A
         }
     }
 
-    override suspend fun sendRecoveryEmail(email: String) : Flow<Result<OkResponse>> = flow {
+    override fun sendRecoveryEmail(email: String) : Flow<Result<OkResponse>> = flow {
         try{
             auth.sendPasswordResetEmail(email).await()
             emit(Result.success( OkResponse(response = true))) // Adjust OkResponse to match your needs
@@ -50,12 +50,10 @@ class AccountServiceImpl @Inject constructor(private val auth: FirebaseAuth) : A
         }
     }
 
-    override suspend fun signOut() : Flow<Result<OkResponse>> = flow {
+    override fun signOut() : Flow<Result<OkResponse>> = flow {
         try{
-            if (auth.currentUser!!.isAnonymous) {
-                auth.currentUser!!.delete()
-            }
             auth.signOut()
+            emit(Result.success( OkResponse(response = true))) // Adjust OkResponse to match your needs
         } catch (e: Exception) {
             emit(Result.failure(e))
         }

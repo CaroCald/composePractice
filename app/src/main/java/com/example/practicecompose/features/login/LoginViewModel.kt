@@ -47,4 +47,7 @@ class LoginViewModel @Inject constructor(
             accountRepository.closeSession()
         }
     }
+    fun isLogged(): Boolean {
+       return accountRepository.isLogged()
+    }
 }

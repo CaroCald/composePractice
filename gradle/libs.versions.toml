@@ -39,7 +39,9 @@ retrofit = "2.10.0"
 firebaseFirestoreKtx = "25.0.0"
 firebaseAuthKtx = "23.0.0"
 kapt = "2.0.0"
-okhttp = "4.10.0"
+okhttp = "4.11.0"
+security-crypto = "1.1.0-alpha06"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -97,6 +99,7 @@ gsonConverter = { group = "com.squareup.retrofit2", name = "converter-gson", ver
 firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
 logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
+security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "security-crypto" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

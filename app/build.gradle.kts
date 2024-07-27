@@ -124,6 +124,8 @@ dependencies {
     implementation(libs.gsonConverter)
     implementation(libs.gson)
     implementation(libs.logging.interceptor)
+    //
+    implementation(libs.security.crypto)
 }// Allow references to generated code
 kapt {
     correctErrorTypes = true

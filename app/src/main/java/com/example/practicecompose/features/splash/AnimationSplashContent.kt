@@ -6,7 +6,9 @@ import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.practicecompose.features.login.LoginViewModel
 import com.example.practicecompose.navigation.NavigationItem
 import kotlinx.coroutines.delay
 
@@ -15,7 +17,8 @@ fun AnimationSplashContent(
     scaleAnimation: Animatable<Float, AnimationVector1D>,
     navController: NavController,
     durationMillisAnimation: Int,
-    delayScreen: Long
+    delayScreen: Long,
+    authViewModel: LoginViewModel = hiltViewModel<LoginViewModel>()
 ) {
 
     LaunchedEffect(key1 = true) {
@@ -31,6 +34,11 @@ fun AnimationSplashContent(
 
         delay(timeMillis = delayScreen)
 
-        navController.navigate(route =NavigationItem.Login.route)
+        var path = NavigationItem.Login.route
+        if(authViewModel.isLogged()){
+            path = NavigationItem.MovieList.route
+        }
+        navController.navigate(route = path)
+
     }
 }
