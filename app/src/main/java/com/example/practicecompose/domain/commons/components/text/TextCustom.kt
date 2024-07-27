@@ -1,4 +1,4 @@
-package com.example.practicecompose.commons.components.text
+package com.example.practicecompose.domain.commons.components.text
 
 
 import androidx.annotation.StringRes

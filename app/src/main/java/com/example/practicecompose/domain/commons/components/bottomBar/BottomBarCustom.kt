@@ -1,4 +1,4 @@
-package com.example.practicecompose.commons.components.bottomBar
+package com.example.practicecompose.domain.commons.components.bottomBar
 
 import android.annotation.SuppressLint
 import androidx.compose.material3.Icon
@@ -12,7 +12,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.practicecompose.commons.components.text.TextCustom
+import com.example.practicecompose.domain.commons.components.text.TextCustom
 import com.example.practicecompose.navigation.BottomNavigationItem
 
 @SuppressLint("SuspiciousIndentation")

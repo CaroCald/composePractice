@@ -25,10 +25,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.example.practicecompose.commons.components.bottomBar.BottomNavigationBar
-import com.example.practicecompose.commons.components.scaffold.ScaffoldCustom
-import com.example.practicecompose.commons.components.text.TextCustom
-import com.example.practicecompose.commons.components.toolbar.ToolBarCustom
+import com.example.practicecompose.domain.commons.components.bottomBar.BottomNavigationBar
+import com.example.practicecompose.domain.commons.components.scaffold.ScaffoldCustom
+import com.example.practicecompose.domain.commons.components.text.TextCustom
+import com.example.practicecompose.domain.commons.components.toolbar.ToolBarCustom
 import com.example.practicecompose.data.remote.ApiResult
 import com.example.practicecompose.data.remote.constants.Constants
 import com.example.practicecompose.data.remote.models.movies.Result

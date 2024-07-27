@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.practicecompose.commons.components.bottomBar.BottomNavigationBar
+import com.example.practicecompose.domain.commons.components.bottomBar.BottomNavigationBar
 
 @Composable
 fun HomeScreen(navHostController: NavHostController) {

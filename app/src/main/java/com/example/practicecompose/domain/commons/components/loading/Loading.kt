@@ -1,4 +1,4 @@
-package com.example.practicecompose.commons.components.loading
+package com.example.practicecompose.domain.commons.components.loading
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

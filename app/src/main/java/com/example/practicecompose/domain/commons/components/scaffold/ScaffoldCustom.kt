@@ -1,4 +1,4 @@
-package com.example.practicecompose.commons.components.scaffold
+package com.example.practicecompose.domain.commons.components.scaffold
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -10,8 +10,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.practicecompose.R
-import com.example.practicecompose.commons.components.alerts.CustomAlertDialog
-import com.example.practicecompose.commons.components.loading.Loading
+import com.example.practicecompose.domain.commons.components.alerts.CustomAlertDialog
+import com.example.practicecompose.domain.commons.components.loading.Loading
 import com.example.practicecompose.data.remote.CustomError
 
 

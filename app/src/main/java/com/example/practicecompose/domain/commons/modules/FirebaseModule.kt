@@ -1,4 +1,4 @@
-package com.example.practicecompose.commons.modules
+package com.example.practicecompose.domain.commons.modules
 
 import android.content.Context
 import com.example.practicecompose.data.remote.impl.AccountServiceImpl

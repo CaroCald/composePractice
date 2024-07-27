@@ -1,7 +1,7 @@
 package com.example.practicecompose.data.remote.repositories
 
 
-import com.example.practicecompose.commons.utils.ErrorUtils
+import com.example.practicecompose.domain.commons.utils.ErrorUtils
 import com.example.practicecompose.data.local.managers.SessionManager
 import com.example.practicecompose.data.remote.ApiResult
 import com.example.practicecompose.data.remote.models.user.UserFirebase

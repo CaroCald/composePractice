@@ -26,11 +26,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.practicecompose.R
-import com.example.practicecompose.commons.components.bottomBar.BottomNavigationBar
-import com.example.practicecompose.commons.components.buttons.PrimaryButton
-import com.example.practicecompose.commons.components.scaffold.ScaffoldCustom
-import com.example.practicecompose.commons.components.text.TextCustom
-import com.example.practicecompose.commons.components.toolbar.ToolBarCustom
+import com.example.practicecompose.domain.commons.components.bottomBar.BottomNavigationBar
+import com.example.practicecompose.domain.commons.components.buttons.PrimaryButton
+import com.example.practicecompose.domain.commons.components.scaffold.ScaffoldCustom
+import com.example.practicecompose.domain.commons.components.text.TextCustom
+import com.example.practicecompose.domain.commons.components.toolbar.ToolBarCustom
 import com.example.practicecompose.data.remote.ApiResult
 import com.example.practicecompose.data.remote.models.user.UserResponse
 import com.example.practicecompose.features.login.LoginViewModel

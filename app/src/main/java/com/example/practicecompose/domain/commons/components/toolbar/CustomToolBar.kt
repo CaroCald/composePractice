@@ -1,4 +1,4 @@
-package com.example.practicecompose.commons.components.toolbar
+package com.example.practicecompose.domain.commons.components.toolbar
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.navigation.NavHostController
 import com.example.practicecompose.R
-import com.example.practicecompose.commons.components.text.TextCustom
+import com.example.practicecompose.domain.commons.components.text.TextCustom
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

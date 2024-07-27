@@ -1,4 +1,4 @@
-package com.example.practicecompose.commons.components.buttons
+package com.example.practicecompose.domain.commons.components.buttons
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.practicecompose.commons.components.text.TextCustom
+import com.example.practicecompose.domain.commons.components.text.TextCustom
 
 
 @Composable

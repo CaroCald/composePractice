@@ -1,4 +1,4 @@
-package com.example.practicecompose.commons.modules
+package com.example.practicecompose.domain.commons.modules
 
 import com.example.practicecompose.data.remote.constants.Constants
 import com.example.practicecompose.data.remote.interceptors.AuthInterceptor

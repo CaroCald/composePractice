@@ -1,4 +1,4 @@
-package com.example.practicecompose.commons.components.alerts
+package com.example.practicecompose.domain.commons.components.alerts
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.example.practicecompose.R
-import com.example.practicecompose.commons.components.text.TextCustom
+import com.example.practicecompose.domain.commons.components.text.TextCustom
 
 
 @Composable
