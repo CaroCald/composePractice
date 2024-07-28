@@ -1,9 +1,16 @@
 package com.example.practicecompose.data.remote.models.movies
 
+import com.example.practicecompose.domain.entities.generics.api.GenericResponse
 import com.google.gson.annotations.SerializedName
 
+class MovieDetail(
+    code: Int? = null,
+    responseType: String? = null,
+    message: String? = null,
+    content: MovieDetailContent? = null
+) : GenericResponse<MovieDetailContent>(code, responseType, message, content)
 
-data class MovieDetail (
+data class MovieDetailContent (
     val adult: Boolean = false,
 
     @SerializedName("backdrop_path")

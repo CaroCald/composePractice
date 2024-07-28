@@ -1,11 +1,11 @@
-package com.example.practicecompose.features.login
+package com.example.practicecompose.features.auth
 
+import android.app.Application
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import baseEventApi
 import com.example.practicecompose.data.remote.ApiResult
@@ -14,8 +14,11 @@ import com.example.practicecompose.data.remote.models.user.UserRequest
 import com.example.practicecompose.data.remote.models.user.UserResponse
 import com.example.practicecompose.data.remote.repositories.AccountRepository
 import com.example.practicecompose.domain.entities.generics.api.GenericApiState
+import com.example.practicecompose.domain.entities.generics.viewmodel.BaseViewModel
 import com.example.practicecompose.domain.use_cases.forms.ValidateEmailUseCase
 import com.example.practicecompose.domain.use_cases.forms.ValidatePasswordUseCase
+import com.example.practicecompose.features.auth.login.LoginEvent
+import com.example.practicecompose.features.auth.login.LoginState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,9 +27,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(
+class AuthViewModel @Inject constructor(
     private val accountRepository: AccountRepository,
-): ViewModel(){
+    application: Application
+): BaseViewModel(application){
 
     private val _loginState = MutableStateFlow<ApiResult<UserResponse>>(ApiResult.Loading(false))
     private var loginState: StateFlow<ApiResult<UserResponse>> = _loginState.asStateFlow()
@@ -38,7 +42,6 @@ class LoginViewModel @Inject constructor(
     private val validatePasswordUseCase = ValidatePasswordUseCase()
 
     var formState by mutableStateOf(LoginState())
-
     var apiState by mutableStateOf(GenericApiState())
 
     fun onEvent(event: LoginEvent) {
@@ -70,7 +73,7 @@ class LoginViewModel @Inject constructor(
         })
     }
 
-    fun clear() {
+    override fun restoreState() {
         formState = LoginState()
         apiState = GenericApiState()
         loginState= MutableStateFlow<ApiResult<UserResponse>>(ApiResult.Error(Throwable()))

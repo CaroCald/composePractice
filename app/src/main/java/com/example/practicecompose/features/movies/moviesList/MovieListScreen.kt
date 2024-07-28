@@ -1,4 +1,4 @@
-package com.example.practicecompose.features.movies
+package com.example.practicecompose.features.movies.moviesList
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -32,6 +32,7 @@ import com.example.practicecompose.domain.commons.components.text.TextCustom
 import com.example.practicecompose.data.remote.ApiResult
 import com.example.practicecompose.data.remote.constants.Constants
 import com.example.practicecompose.data.remote.models.movies.Result
+import com.example.practicecompose.features.movies.MoviesViewModel
 import com.example.practicecompose.navigation.NavigationItem
 
 @Composable
@@ -53,24 +54,30 @@ fun MovieScreen(
             Box {
                 moviesViewModel.EventApi(onSuccess = {
                     val movieList = (moviesState as ApiResult.Success).data.results
-                    results = movieList
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        contentPadding = PaddingValues(16.dp)
-                    ) {
-                        items(movieList) { items ->
-                            MovieCard(title = items.title,
-                                image = items.posterPath,
-                                onClicked = {
-                                    val path = "${NavigationItem.MovieDetail.route}/${items.id}"
-                                    navController.navigate(route = path)
-                                })
+                    if (movieList != null) {
+                        results = movieList
+                        LazyVerticalGrid(
+                            columns = GridCells.Fixed(2),
+                            contentPadding = PaddingValues(16.dp)
+                        ) {
+                            items(movieList) { items ->
+                                MovieCard(title = items.title!!,
+                                    image = items.posterPath!!,
+                                    onClicked = {
+                                        val path = "${NavigationItem.MovieDetail.route}/${items.id}"
+                                        navController.navigate(route = path)
+                                    })
+                            }
                         }
                     }
+
                 }, onError = {
 
                 })
             }
+        },
+        onClickError = {
+            moviesViewModel.restoreState()
         },
         isLoading = moviesViewModel.apiState.isLoading,
         hasError = moviesViewModel.apiState.error

@@ -126,6 +126,8 @@ dependencies {
     implementation(libs.logging.interceptor)
     //
     implementation(libs.security.crypto)
+
+    implementation(kotlin("reflect"))
 }// Allow references to generated code
 kapt {
     correctErrorTypes = true

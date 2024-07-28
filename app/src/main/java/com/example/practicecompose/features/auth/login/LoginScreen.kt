@@ -1,4 +1,4 @@
-package com.example.practicecompose.features.login
+package com.example.practicecompose.features.auth.login
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,12 +20,13 @@ import com.example.practicecompose.domain.commons.components.buttons.PrimaryButt
 import com.example.practicecompose.domain.commons.components.input.PrimaryInput
 import com.example.practicecompose.domain.commons.components.scaffold.ScaffoldCustom
 import com.example.practicecompose.domain.commons.components.text.TextCustom
+import com.example.practicecompose.features.auth.AuthViewModel
 import com.example.practicecompose.navigation.NavigationItem
 
 
 @Composable
 fun LoginScreen(navController: NavHostController,
-                authViewModel: LoginViewModel = hiltViewModel<LoginViewModel>()) {
+                authViewModel: AuthViewModel = hiltViewModel<AuthViewModel>()) {
 
     ScaffoldCustom(
         customBody = {
@@ -69,7 +70,7 @@ fun LoginScreen(navController: NavHostController,
             })
         },
         onClickError = {
-            authViewModel.clear()
+            authViewModel.restoreState()
         },
         isLoading = authViewModel.apiState.isLoading,
         hasError = authViewModel.apiState.error

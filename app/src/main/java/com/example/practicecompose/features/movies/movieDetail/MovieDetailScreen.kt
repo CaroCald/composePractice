@@ -1,4 +1,4 @@
-package com.example.practicecompose.features.movieDetail
+package com.example.practicecompose.features.movies.movieDetail
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,9 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -26,8 +23,7 @@ import com.example.practicecompose.domain.commons.components.text.TextCustom
 import com.example.practicecompose.domain.commons.components.toolbar.ToolBarCustom
 import com.example.practicecompose.data.remote.ApiResult
 import com.example.practicecompose.data.remote.constants.Constants
-import com.example.practicecompose.data.remote.models.movies.MovieDetail
-import com.example.practicecompose.features.movies.ImageCard
+import com.example.practicecompose.features.movies.moviesList.ImageCard
 import com.example.practicecompose.features.movies.MoviesViewModel
 
 @Composable
@@ -36,7 +32,6 @@ fun MovieDetailScreen(navHostController: NavHostController,
                       moviesVieModel: MoviesViewModel = hiltViewModel<MoviesViewModel>(),) {
 
     val movieState by moviesVieModel.movieDetailState.collectAsState()
-    var results by remember { mutableStateOf(MovieDetail()) }
 
     LaunchedEffect(Unit){
         moviesVieModel.getMovieDetail(id)
@@ -49,8 +44,6 @@ fun MovieDetailScreen(navHostController: NavHostController,
         customBody = {
             moviesVieModel.EventApiDetail(onSuccess = {
                 val movieDetail = (movieState as ApiResult.Success).data
-                results = movieDetail
-
                 Column(
                     modifier = Modifier
                         .padding(20.dp)

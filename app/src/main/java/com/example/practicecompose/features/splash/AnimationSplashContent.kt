@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.practicecompose.features.login.LoginViewModel
+import com.example.practicecompose.features.auth.AuthViewModel
 import com.example.practicecompose.navigation.NavigationItem
 import kotlinx.coroutines.delay
 
@@ -18,7 +18,7 @@ fun AnimationSplashContent(
     navController: NavController,
     durationMillisAnimation: Int,
     delayScreen: Long,
-    authViewModel: LoginViewModel = hiltViewModel<LoginViewModel>()
+    authViewModel: AuthViewModel = hiltViewModel<AuthViewModel>()
 ) {
 
     LaunchedEffect(key1 = true) {

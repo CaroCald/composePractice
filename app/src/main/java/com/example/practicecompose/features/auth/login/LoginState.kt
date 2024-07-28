@@ -1,4 +1,4 @@
-package com.example.practicecompose.features.login
+package com.example.practicecompose.features.auth.login
 
 import com.example.practicecompose.domain.entities.generics.forms.UiText
 

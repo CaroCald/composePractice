@@ -1,4 +1,4 @@
-package com.example.practicecompose.features.login
+package com.example.practicecompose.features.auth.login
 
 sealed class LoginEvent {
     data class EmailChanged(val email: String) : LoginEvent()

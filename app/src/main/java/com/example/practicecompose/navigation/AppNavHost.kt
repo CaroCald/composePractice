@@ -9,10 +9,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.practicecompose.features.home.HomeScreen
-import com.example.practicecompose.features.login.LoginScreen
-import com.example.practicecompose.features.movieDetail.MovieDetailScreen
-import com.example.practicecompose.features.movies.MovieScreen
-import com.example.practicecompose.features.profile.ProfileScreen
+import com.example.practicecompose.features.auth.login.LoginScreen
+import com.example.practicecompose.features.movies.movieDetail.MovieDetailScreen
+import com.example.practicecompose.features.movies.moviesList.MovieScreen
+import com.example.practicecompose.features.auth.profile.ProfileScreen
 import com.example.practicecompose.features.splash.SplashScreen
 
 @Composable

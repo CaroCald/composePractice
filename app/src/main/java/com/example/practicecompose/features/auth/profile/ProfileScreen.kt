@@ -1,4 +1,4 @@
-package com.example.practicecompose.features.profile
+package com.example.practicecompose.features.auth.profile
 
 
 import androidx.compose.foundation.Image
@@ -8,14 +8,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -31,13 +27,12 @@ import com.example.practicecompose.domain.commons.components.buttons.PrimaryButt
 import com.example.practicecompose.domain.commons.components.scaffold.ScaffoldCustom
 import com.example.practicecompose.domain.commons.components.text.TextCustom
 import com.example.practicecompose.domain.commons.components.toolbar.ToolBarCustom
-import com.example.practicecompose.data.remote.ApiResult
-import com.example.practicecompose.data.remote.models.user.UserResponse
-import com.example.practicecompose.features.login.LoginViewModel
+import com.example.practicecompose.features.auth.AuthViewModel
 import com.example.practicecompose.navigation.NavigationItem
 
 @Composable
-fun ProfileScreen(navHostController: NavHostController, authViewModel: LoginViewModel = hiltViewModel<LoginViewModel>(),) {
+fun ProfileScreen(navHostController: NavHostController,
+                  authViewModel: AuthViewModel = hiltViewModel<AuthViewModel>(),) {
 
     val userState by authViewModel.userState.collectAsState()
 

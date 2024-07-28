@@ -5,6 +5,8 @@ sealed class ApiResult<out T> {
     data class Success<out T>(val data: T) : ApiResult<T>()
     data class Loading(val isLoading: Boolean) : ApiResult<Nothing>()
     data class Error(val exception: Throwable) : ApiResult<Nothing>()
+    data class ErrorGeneric<out T>(val data: T?,val exception: String): ApiResult<Nothing>()
+
 }
 
 
