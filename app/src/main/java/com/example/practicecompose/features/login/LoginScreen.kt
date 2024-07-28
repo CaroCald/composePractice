@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -40,7 +38,8 @@ fun LoginScreen(navController: NavHostController,
             ) {
                 TextCustom(stringResource(R.string.title_welcome))
                 Spacer(modifier = Modifier.height(8.dp))
-                PrimaryInput(text = authViewModel.formState.email,
+                PrimaryInput(
+                    text = authViewModel.formState.email,
                     title = stringResource(R.string.input_email ),
                     isError = authViewModel.formState.emailError != null,
                     errorMessage = authViewModel.formState.emailError ,
@@ -48,8 +47,9 @@ fun LoginScreen(navController: NavHostController,
                         authViewModel.onEvent(LoginEvent.EmailChanged(it))
                     })
                 Spacer(modifier = Modifier.height(8.dp))
-                PrimaryInput(title = stringResource(R.string.input_password),
+                PrimaryInput(
                     text = authViewModel.formState.password,
+                    title = stringResource(R.string.input_password),
                     isError = authViewModel.formState.passwordError != null,
                     errorMessage = authViewModel.formState.passwordError ,
                     onTextChange = {
@@ -57,14 +57,19 @@ fun LoginScreen(navController: NavHostController,
                     },
                     isPassword = true,)
                 Spacer(modifier = Modifier.height(20.dp))
-                PrimaryButton(text = stringResource(id = R.string.btn_login),
+                PrimaryButton(
+                    isEnable = authViewModel.formState.isValid,
+                    text = stringResource(id = R.string.btn_login),
                     onClick = {
                         authViewModel.onEvent(LoginEvent.Submit)
                     })
             }
             authViewModel.EventApi(onSuccess = {
                 navController.navigate(NavigationItem.MovieList.route)
-            }) {}
+            })
+        },
+        onClickError = {
+            authViewModel.clear()
         },
         isLoading = authViewModel.apiState.isLoading,
         hasError = authViewModel.apiState.error

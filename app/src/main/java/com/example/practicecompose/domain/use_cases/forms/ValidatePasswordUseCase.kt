@@ -1,19 +1,20 @@
 package com.example.practicecompose.domain.use_cases.forms
 
 import com.example.practicecompose.R
-import com.example.practicecompose.domain.entities.UiText
-import com.example.practicecompose.domain.entities.ValidationResult
+import com.example.practicecompose.domain.entities.generics.forms.UiText
+import com.example.practicecompose.domain.entities.generics.forms.ValidationResult
 
 class ValidatePasswordUseCase : BaseUseCase<String, ValidationResult> {
     override fun execute(input: String): ValidationResult {
-        if (input.isEmpty()) {
+        if (input.isBlank()) {
             return ValidationResult(
                 successful = false,
                 errorMessage = UiText.StringResource(resId = R.string.strThePasswordNeedsToConsistOfAtLeastEightCharacters),
             )
         }
         return ValidationResult(
-            successful = true
+            successful = true,
+            errorMessage = null
         )
     }
 

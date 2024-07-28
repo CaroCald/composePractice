@@ -27,7 +27,7 @@ import com.example.practicecompose.domain.commons.components.toolbar.ToolBarCust
 import com.example.practicecompose.data.remote.ApiResult
 import com.example.practicecompose.data.remote.constants.Constants
 import com.example.practicecompose.data.remote.models.movies.MovieDetail
-import com.example.practicecompose.features.movies.CharacterImg
+import com.example.practicecompose.features.movies.ImageCard
 import com.example.practicecompose.features.movies.MoviesViewModel
 
 @Composable
@@ -36,8 +36,6 @@ fun MovieDetailScreen(navHostController: NavHostController,
                       moviesVieModel: MoviesViewModel = hiltViewModel<MoviesViewModel>(),) {
 
     val movieState by moviesVieModel.movieDetailState.collectAsState()
-    var isLoading by remember { mutableStateOf(false) }
-    var error by remember { mutableStateOf<Throwable?>(null) }
     var results by remember { mutableStateOf(MovieDetail()) }
 
     LaunchedEffect(Unit){
@@ -49,42 +47,33 @@ fun MovieDetailScreen(navHostController: NavHostController,
             title = "Detalle",
             hasBackButton = true) },
         customBody = {
-            when (movieState) {
-                is ApiResult.Loading -> {
-                    isLoading = (movieState as ApiResult.Loading).isLoading
-                }
-                is ApiResult.Success -> {
-                    isLoading = false
-                    val movieDetail = (movieState as ApiResult.Success).data
-                    results = movieDetail
+            moviesVieModel.EventApiDetail(onSuccess = {
+                val movieDetail = (movieState as ApiResult.Success).data
+                results = movieDetail
 
-                    Column(
-                       modifier = Modifier
-                           .padding(20.dp)
-                           .verticalScroll(rememberScrollState())
-                           ,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center) {
-                        TextCustom(text = movieDetail.title)
-                        Box (modifier = Modifier.padding(horizontal = 40.dp, vertical = 10.dp)){
-                            CharacterImg(imgURL = Constants.POSTER_IMAGE_BASE_URL + movieDetail.posterPath)
-                        }
-                        TextCustom(text = movieDetail.overview, textAlign = TextAlign.Center)
-                        Spacer(modifier = Modifier.height(20.dp))
-                        TextCustom(text = movieDetail.releaseDate)
-                        Spacer(modifier = Modifier.height(10.dp))
-                        TextCustom(text = movieDetail.status)
+                Column(
+                    modifier = Modifier
+                        .padding(20.dp)
+                        .verticalScroll(rememberScrollState())
+                    ,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center) {
+                    TextCustom(text = movieDetail.title)
+                    Box (modifier = Modifier.padding(horizontal = 40.dp, vertical = 10.dp)){
+                        ImageCard(imgURL = Constants.POSTER_IMAGE_BASE_URL + movieDetail.posterPath)
                     }
+                    TextCustom(text = movieDetail.overview, textAlign = TextAlign.Center)
+                    Spacer(modifier = Modifier.height(20.dp))
+                    TextCustom(text = movieDetail.releaseDate)
+                    Spacer(modifier = Modifier.height(10.dp))
+                    TextCustom(text = movieDetail.status)
+                }
 
-                }
-                is ApiResult.Error -> {
-                    isLoading = false
-                    val exception = (movieState as ApiResult.Error).exception
-                    error = exception
-                }
-            }
+            }, onError = {
+
+            })
         },
-        isLoading = isLoading,
-        hasError = error
+        isLoading = moviesVieModel.apiState.isLoading,
+        hasError = moviesVieModel.apiState.error
     )
 }

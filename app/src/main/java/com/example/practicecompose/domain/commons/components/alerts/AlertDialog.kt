@@ -22,20 +22,14 @@ fun CustomAlertDialog(
         )
     },
     message: String,
-    confirmButton: @Composable () -> Unit = {
-        Button(onClick = { shouldShowDialog.value = false }) {
-            TextCustom(
-                text = stringResource(id = R.string.confirm),
-                color = Color.White,
-                textAlign = TextAlign.Center
-            )
-        }
-    },
+    onClick: () -> Unit,
     dismissButton: @Composable (() -> Unit)? = null
 ) {
     if (shouldShowDialog.value) {
         AlertDialog(
-            onDismissRequest = { shouldShowDialog.value = false },
+            onDismissRequest = {
+                shouldShowDialog.value = false
+                               },
             title = title,
             text = {
                 TextCustom(
@@ -44,7 +38,19 @@ fun CustomAlertDialog(
                     textAlign = TextAlign.Center
                 )
             },
-            confirmButton = confirmButton,
+            confirmButton = {
+                Button(onClick = {
+                    onClick()
+                    shouldShowDialog.value = false
+
+                }) {
+                    TextCustom(
+                        text = stringResource(id = R.string.confirm),
+                        color = Color.White,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            },
             dismissButton = dismissButton
         )
     }

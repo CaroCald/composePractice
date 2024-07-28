@@ -2,8 +2,8 @@ package com.example.practicecompose.domain.use_cases.forms
 
 import android.util.Patterns
 import com.example.practicecompose.R
-import com.example.practicecompose.domain.entities.UiText
-import com.example.practicecompose.domain.entities.ValidationResult
+import com.example.practicecompose.domain.entities.generics.forms.UiText
+import com.example.practicecompose.domain.entities.generics.forms.ValidationResult
 
 class ValidateEmailUseCase: BaseUseCase<String, ValidationResult> {
     override fun execute(input: String): ValidationResult {

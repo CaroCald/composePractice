@@ -1,21 +1,15 @@
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import com.example.practicecompose.data.remote.ApiResult
-import com.example.practicecompose.domain.use_cases.api.GenericApiState
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import com.example.practicecompose.domain.entities.generics.api.GenericApiState
+
 
 @Composable
 fun <T> baseEventApi(
     event: ApiResult<T>,
-    onSuccess: (T) -> Unit,
+    onSuccess: @Composable (T) -> Unit,
     onError: (Throwable) -> Unit,
 ): GenericApiState {
     val apiState = remember { mutableStateOf(GenericApiState()) }

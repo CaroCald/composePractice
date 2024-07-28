@@ -1,7 +1,7 @@
 package com.example.practicecompose.data.remote.impl
 
 
-import com.example.practicecompose.data.remote.models.generics.OkResponse
+import com.example.practicecompose.domain.entities.generics.api.OkResponse
 import com.example.practicecompose.data.remote.models.user.UserFirebase
 import com.example.practicecompose.data.remote.models.user.UserResponse
 import com.example.practicecompose.data.remote.services.AccountService

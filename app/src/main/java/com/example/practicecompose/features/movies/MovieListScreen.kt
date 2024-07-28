@@ -2,6 +2,7 @@ package com.example.practicecompose.features.movies
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -28,7 +29,6 @@ import coil.compose.AsyncImage
 import com.example.practicecompose.domain.commons.components.bottomBar.BottomNavigationBar
 import com.example.practicecompose.domain.commons.components.scaffold.ScaffoldCustom
 import com.example.practicecompose.domain.commons.components.text.TextCustom
-import com.example.practicecompose.domain.commons.components.toolbar.ToolBarCustom
 import com.example.practicecompose.data.remote.ApiResult
 import com.example.practicecompose.data.remote.constants.Constants
 import com.example.practicecompose.data.remote.models.movies.Result
@@ -40,28 +40,22 @@ fun MovieScreen(
     moviesViewModel: MoviesViewModel = hiltViewModel()
 ) {
     val moviesState by moviesViewModel.movieState.collectAsState()
-
-    var isLoading by remember { mutableStateOf(false) }
-    var error by remember { mutableStateOf<Throwable?>(null) }
-    var results by remember { mutableStateOf(emptyList<Result>())}
+    var results by remember { mutableStateOf(emptyList<Result>()) }
 
 
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         moviesViewModel.fetchMovies()
     }
 
     ScaffoldCustom(
         customBottomBar = { BottomNavigationBar(navController) },
         customBody = {
-            when (moviesState) {
-                is ApiResult.Loading -> {
-                    isLoading = (moviesState as ApiResult.Loading).isLoading
-                }
-                is ApiResult.Success -> {
-                    isLoading = false
+            Box {
+                moviesViewModel.EventApi(onSuccess = {
                     val movieList = (moviesState as ApiResult.Success).data.results
                     results = movieList
-                    LazyVerticalGrid(columns = GridCells.Fixed(2),
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
                         contentPadding = PaddingValues(16.dp)
                     ) {
                         items(movieList) { items ->
@@ -73,34 +67,33 @@ fun MovieScreen(
                                 })
                         }
                     }
-                }
-                is ApiResult.Error -> {
-                    isLoading = false
-                    val exception = (moviesState as ApiResult.Error).exception
-                    error = exception
-                }
+                }, onError = {
+
+                })
             }
         },
-        isLoading = isLoading,
-        hasError = error
+        isLoading = moviesViewModel.apiState.isLoading,
+        hasError = moviesViewModel.apiState.error
     )
 }
 
 @Composable
 fun MovieCard(title: String, image: String, onClicked: () -> Unit) {
-    Column (modifier = Modifier
-        .padding(8.dp)
-        .clickable { onClicked() },
-        horizontalAlignment = Alignment.Start){
+    Column(
+        modifier = Modifier
+            .padding(8.dp)
+            .clickable { onClicked() },
+        horizontalAlignment = Alignment.Start
+    ) {
 
-        CharacterImg(imgURL = Constants.POSTER_IMAGE_BASE_URL+ image)
+        ImageCard(imgURL = Constants.POSTER_IMAGE_BASE_URL + image)
         TextCustom(text = title)
     }
 }
 
 
 @Composable
-fun CharacterImg(imgURL: String) {
+fun ImageCard(imgURL: String) {
     Card(
         shape = RectangleShape,
         border = BorderStroke(width = 2.dp, color = Color.White),

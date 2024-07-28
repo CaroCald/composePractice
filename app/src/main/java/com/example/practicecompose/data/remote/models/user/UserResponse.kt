@@ -1,7 +1,7 @@
 package com.example.practicecompose.data.remote.models.user
 
-import com.example.practicecompose.data.remote.models.generics.GenericResponse
-import com.example.practicecompose.data.remote.models.generics.OkResponse
+import com.example.practicecompose.domain.entities.generics.api.GenericResponse
+import com.example.practicecompose.domain.entities.generics.api.OkResponse
 
 class UserResponse(
     code: Int? = null,

@@ -1,4 +1,4 @@
-package com.example.practicecompose.data.remote.models.generics
+package com.example.practicecompose.domain.entities.generics.api
 
 open class GenericResponse<T>(
     val code: Int? = null,

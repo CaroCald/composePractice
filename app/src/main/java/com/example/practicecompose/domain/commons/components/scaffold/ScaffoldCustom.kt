@@ -22,7 +22,8 @@ fun ScaffoldCustom(
     customFloatingButton: (@Composable () -> Unit)? = null,
     customBody: @Composable () -> Unit ,
     isLoading: Boolean,
-    hasError : Any? =null
+    hasError : Any? =null,
+    onClickError: () -> Unit = {}
 ) {
     Box {
         Scaffold(
@@ -43,6 +44,9 @@ fun ScaffoldCustom(
             shouldShowDialog.value = true
             CustomAlertDialog(
                 shouldShowDialog = shouldShowDialog,
+                onClick = {
+                    onClickError()
+                    shouldShowDialog.value = false },
                 message = hasError.message ?: stringResource(R.string.error_generic)
             )
         }

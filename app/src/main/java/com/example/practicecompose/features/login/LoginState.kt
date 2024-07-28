@@ -1,10 +1,11 @@
 package com.example.practicecompose.features.login
 
-import com.example.practicecompose.domain.entities.UiText
+import com.example.practicecompose.domain.entities.generics.forms.UiText
 
 data class LoginState(
-    val email: String = "",
+    var email: String = "",
     val emailError: UiText? = null,
-    val password: String = "",
+    var password: String = "",
     val passwordError: UiText? = null,
+    var isValid : Boolean = false
 )

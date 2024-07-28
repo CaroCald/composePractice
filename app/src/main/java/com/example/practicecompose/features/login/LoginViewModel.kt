@@ -9,13 +9,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import baseEventApi
 import com.example.practicecompose.data.remote.ApiResult
-import com.example.practicecompose.data.remote.CustomError
 import com.example.practicecompose.data.remote.models.user.UserFirebase
 import com.example.practicecompose.data.remote.models.user.UserRequest
 import com.example.practicecompose.data.remote.models.user.UserResponse
 import com.example.practicecompose.data.remote.repositories.AccountRepository
-import com.example.practicecompose.domain.commons.utils.ErrorUtils
-import com.example.practicecompose.domain.use_cases.api.GenericApiState
+import com.example.practicecompose.domain.entities.generics.api.GenericApiState
 import com.example.practicecompose.domain.use_cases.forms.ValidateEmailUseCase
 import com.example.practicecompose.domain.use_cases.forms.ValidatePasswordUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,7 +29,7 @@ class LoginViewModel @Inject constructor(
 ): ViewModel(){
 
     private val _loginState = MutableStateFlow<ApiResult<UserResponse>>(ApiResult.Loading(false))
-    private val loginState: StateFlow<ApiResult<UserResponse>> = _loginState.asStateFlow()
+    private var loginState: StateFlow<ApiResult<UserResponse>> = _loginState.asStateFlow()
 
     private val _userState = MutableStateFlow(UserFirebase())
     val userState: StateFlow<UserFirebase> = _userState.asStateFlow()
@@ -47,43 +45,49 @@ class LoginViewModel @Inject constructor(
         when (event) {
             is LoginEvent.EmailChanged -> {
                 formState = formState.copy(email = event.email)
-                validateEmail()
-            }
+                validateForm()
 
+            }
             is LoginEvent.PasswordChanged -> {
                 formState = formState.copy(password = event.password)
-                validatePassword()
+                validateForm()
             }
-
             is LoginEvent.Submit -> {
-                if (validateEmail() && validatePassword()) {
+                if (validateForm()) {
                     doLogin(UserRequest(formState.email, formState.password))
-                }else{
-                    apiState =apiState.copy(error = CustomError.ValidationError(message = "ERROR", code = ErrorUtils.ErrorsCodes.ILLEGAL.code))
                 }
             }
         }
     }
 
     @Composable
-    fun EventApi(onSuccess: () -> Unit, onError: () -> Unit){
+    fun EventApi(onSuccess: () -> Unit){
         val event by loginState.collectAsState()
         apiState = baseEventApi(event =event , onSuccess = {
             onSuccess()
-         }, onError = {
-             onError()
+        }, onError = {
+
         })
     }
 
-    private fun validateEmail(): Boolean {
-        val emailResult = validateEmailUseCase.execute(formState.email)
-        formState = formState.copy(emailError = emailResult.errorMessage)
-        return emailResult.successful
+    fun clear() {
+        formState = LoginState()
+        apiState = GenericApiState()
+        loginState= MutableStateFlow<ApiResult<UserResponse>>(ApiResult.Error(Throwable()))
     }
-    private fun validatePassword(): Boolean {
+
+    private fun validateForm(): Boolean {
+        val emailResult = validateEmailUseCase.execute(formState.email)
         val passwordResult = validatePasswordUseCase.execute(formState.password)
-        formState = formState.copy(passwordError = passwordResult.errorMessage)
-        return passwordResult.successful
+        val success = emailResult.successful && passwordResult.successful
+
+        formState = formState.copy(
+            emailError = emailResult.errorMessage,
+            passwordError = passwordResult.errorMessage,
+            isValid = success
+        )
+
+        return success
     }
 
     private fun doLogin(user: UserRequest) {
@@ -108,6 +112,6 @@ class LoginViewModel @Inject constructor(
         }
     }
     fun isLogged(): Boolean {
-       return accountRepository.isLogged()
+        return accountRepository.isLogged()
     }
 }
