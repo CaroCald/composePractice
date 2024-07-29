@@ -13,11 +13,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,9 +24,7 @@ import coil.compose.AsyncImage
 import com.example.practicecompose.domain.commons.components.bottomBar.BottomNavigationBar
 import com.example.practicecompose.domain.commons.components.scaffold.ScaffoldCustom
 import com.example.practicecompose.domain.commons.components.text.TextCustom
-import com.example.practicecompose.data.remote.ApiResult
 import com.example.practicecompose.data.remote.constants.Constants
-import com.example.practicecompose.data.remote.models.movies.Result
 import com.example.practicecompose.features.movies.MoviesViewModel
 import com.example.practicecompose.navigation.NavigationItem
 
@@ -40,9 +33,6 @@ fun MovieScreen(
     navController: NavHostController,
     moviesViewModel: MoviesViewModel = hiltViewModel()
 ) {
-    val moviesState by moviesViewModel.movieState.collectAsState()
-    var results by remember { mutableStateOf(emptyList<Result>()) }
-
 
     LaunchedEffect(Unit) {
         moviesViewModel.fetchMovies()
@@ -53,9 +43,8 @@ fun MovieScreen(
         customBody = {
             Box {
                 moviesViewModel.EventApi(onSuccess = {
-                    val movieList = (moviesState as ApiResult.Success).data.results
+                    val movieList = moviesViewModel.getResultSMovies()
                     if (movieList != null) {
-                        results = movieList
                         LazyVerticalGrid(
                             columns = GridCells.Fixed(2),
                             contentPadding = PaddingValues(16.dp)

@@ -32,12 +32,12 @@ inline fun <reified T> toResultFlow(context: Context, crossinline call: suspend 
                         emit(ApiResult.ErrorGeneric(errorResponse, response.message()))
                     }
                 } catch (e: Exception) {
-                    val model = setResponseStatus(ResponseError::class.java, API_INTERNET_CODE, API_INTERNET_MESSAGE)
+                    val model = setResponseStatus(ErrorResponse::class.java, API_INTERNET_CODE, API_INTERNET_MESSAGE)
                     emit(ApiResult.ErrorGeneric(model, e.toString()))
                 }
             }
         } else {
-            val model = setResponseStatus(ResponseError::class.java,
+            val model = setResponseStatus(ErrorResponse::class.java,
                 API_INTERNET_CODE, API_INTERNET_MESSAGE
             )
             emit(ApiResult.ErrorGeneric(model, API_INTERNET_MESSAGE))
@@ -89,7 +89,3 @@ inline fun <reified T> setResponseStatus(
     }
 }
 
-data class ResponseError(
-    var code: Int? = null,
-    var message: String? = null
-)

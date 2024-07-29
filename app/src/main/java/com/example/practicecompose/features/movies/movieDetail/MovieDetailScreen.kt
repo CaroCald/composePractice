@@ -10,18 +10,17 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.practicecompose.R
 import com.example.practicecompose.domain.commons.components.scaffold.ScaffoldCustom
 import com.example.practicecompose.domain.commons.components.text.TextCustom
 import com.example.practicecompose.domain.commons.components.toolbar.ToolBarCustom
-import com.example.practicecompose.data.remote.ApiResult
 import com.example.practicecompose.data.remote.constants.Constants
 import com.example.practicecompose.features.movies.moviesList.ImageCard
 import com.example.practicecompose.features.movies.MoviesViewModel
@@ -31,19 +30,17 @@ fun MovieDetailScreen(navHostController: NavHostController,
                       id:String,
                       moviesVieModel: MoviesViewModel = hiltViewModel<MoviesViewModel>(),) {
 
-    val movieState by moviesVieModel.movieDetailState.collectAsState()
-
     LaunchedEffect(Unit){
         moviesVieModel.getMovieDetail(id)
     }
 
     ScaffoldCustom(
         customToolBar = { ToolBarCustom(navController = navHostController,
-            title = "Detalle",
+            title = stringResource(R.string.title_detail),
             hasBackButton = true) },
         customBody = {
             moviesVieModel.EventApiDetail(onSuccess = {
-                val movieDetail = (movieState as ApiResult.Success).data
+                val movieDetail = moviesVieModel.getDetailMovies()
                 Column(
                     modifier = Modifier
                         .padding(20.dp)
@@ -65,6 +62,9 @@ fun MovieDetailScreen(navHostController: NavHostController,
             }, onError = {
 
             })
+        },
+        onClickError = {
+            moviesVieModel.restoreState()
         },
         isLoading = moviesVieModel.apiState.isLoading,
         hasError = moviesVieModel.apiState.error

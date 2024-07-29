@@ -37,5 +37,6 @@
     <string name="strTheEmailCanNotBeBlank">El email es obligatorio</string>
     <string name="strThatsNotAValidEmail">El email no es valido</string>
     <string name="strThePasswordNeedsToConsistOfAtLeastEightCharacters">La contraseña es obligatoria</string>
+    <string name="title_detail">Detalle</string>
 
 </resources>

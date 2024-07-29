@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -34,8 +32,6 @@ import com.example.practicecompose.navigation.NavigationItem
 fun ProfileScreen(navHostController: NavHostController,
                   authViewModel: AuthViewModel = hiltViewModel<AuthViewModel>(),) {
 
-    val userState by authViewModel.userState.collectAsState()
-
     LaunchedEffect(Unit){
         authViewModel.getUserInfo()
     }
@@ -50,14 +46,13 @@ fun ProfileScreen(navHostController: NavHostController,
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
                 Image(
                     painter = painterResource(id = R.drawable.ic_profile),
                     contentDescription = ""
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                TextCustom(text = userState.email ?: "")
-                TextCustom(text = userState.id)
+                TextCustom(text =authViewModel.detailInfoUser().email ?: "")
+                TextCustom(text = authViewModel.detailInfoUser().id)
                 Spacer(modifier = Modifier.height(20.dp))
                 PrimaryButton(text = stringResource(R.string.close_session), onClick = {
                     authViewModel.closeSession()

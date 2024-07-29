@@ -10,9 +10,8 @@ import androidx.lifecycle.viewModelScope
 import baseEventApi
 import com.example.practicecompose.data.remote.ApiResult
 import com.example.practicecompose.data.remote.models.movies.MovieContent
-import com.example.practicecompose.data.remote.models.movies.MovieDetail
 import com.example.practicecompose.data.remote.models.movies.MovieDetailContent
-import com.example.practicecompose.data.remote.models.movies.MovieResponse
+import com.example.practicecompose.data.remote.models.movies.Result
 import com.example.practicecompose.data.remote.repositories.MovieRepository
 import com.example.practicecompose.domain.entities.generics.api.GenericApiState
 import com.example.practicecompose.domain.entities.generics.viewmodel.BaseViewModel
@@ -32,8 +31,8 @@ class MoviesViewModel @Inject constructor(
     private val _movieState = MutableStateFlow<ApiResult<MovieContent>>(ApiResult.Loading(false))
     private val _movieDetail= MutableStateFlow<ApiResult<MovieDetailContent>>(ApiResult.Loading(false))
 
-    var movieState: StateFlow<ApiResult<MovieContent>> = _movieState.asStateFlow()
-    var movieDetailState: StateFlow<ApiResult<MovieDetailContent>> = _movieDetail.asStateFlow()
+    private var movieState: StateFlow<ApiResult<MovieContent>> = _movieState.asStateFlow()
+    private var movieDetailState: StateFlow<ApiResult<MovieDetailContent>> = _movieDetail.asStateFlow()
 
     var apiState by mutableStateOf(GenericApiState())
 
@@ -55,6 +54,17 @@ class MoviesViewModel @Inject constructor(
         }, onError = {
             onError()
         })
+    }
+    @Composable
+    fun getResultSMovies(): List<Result>? {
+        val moviesState by movieState.collectAsState()
+        return (moviesState as ApiResult.Success).data.results
+    }
+
+    @Composable
+    fun getDetailMovies(): MovieDetailContent {
+        val movieState by movieDetailState.collectAsState()
+        return  (movieState as ApiResult.Success).data
     }
 
     fun fetchMovies() {

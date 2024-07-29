@@ -36,7 +36,7 @@ class AuthViewModel @Inject constructor(
     private var loginState: StateFlow<ApiResult<UserResponse>> = _loginState.asStateFlow()
 
     private val _userState = MutableStateFlow(UserFirebase())
-    val userState: StateFlow<UserFirebase> = _userState.asStateFlow()
+    private val userState: StateFlow<UserFirebase> = _userState.asStateFlow()
 
     private val validateEmailUseCase = ValidateEmailUseCase()
     private val validatePasswordUseCase = ValidatePasswordUseCase()
@@ -109,6 +109,13 @@ class AuthViewModel @Inject constructor(
                 }
         }
     }
+
+    @Composable
+    fun detailInfoUser(): UserFirebase {
+        val userState by userState.collectAsState()
+        return userState
+    }
+
     fun closeSession() {
         viewModelScope.launch {
             accountRepository.closeSession()
