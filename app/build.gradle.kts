@@ -1,9 +1,11 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    id("org.jetbrains.kotlin.kapt")
+    id("com.google.devtools.ksp")
     alias(libs.plugins.hiltAndroid)
     id("com.google.gms.google-services")
+    alias(libs.plugins.compose.compiler)
+
 }
 
 android {
@@ -33,17 +35,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_19
+        targetCompatibility = JavaVersion.VERSION_19
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "19"
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.10"
     }
     packaging {
         resources {
@@ -52,6 +54,7 @@ android {
     }
 
 }
+
 
 dependencies {
 
@@ -80,7 +83,7 @@ dependencies {
 
     // Room
     implementation(libs.roomKtx)
-    kapt(libs.roomCompiler)
+    ksp(libs.roomCompiler)
     androidTestImplementation(libs.roomTesting)
 
     // Datastore
@@ -102,7 +105,7 @@ dependencies {
 
     // Hilt
     implementation(libs.hiltAndroid)
-    kapt(libs.hiltCompiler)
+    ksp(libs.hiltCompiler)
     implementation(libs.hiltNavigationCompose)
 
 
@@ -129,6 +132,3 @@ dependencies {
 
     implementation(kotlin("reflect"))
 }// Allow references to generated code
-kapt {
-    correctErrorTypes = true
-}
