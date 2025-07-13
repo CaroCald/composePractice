@@ -34,7 +34,7 @@ fun AnimationSplashContent(
 
         delay(timeMillis = delayScreen)
 
-        var path = NavigationItem.Login.route
+        var path = NavigationItem.Welcome.route
         if(authViewModel.isLogged()){
             path = NavigationItem.MovieList.route
         }

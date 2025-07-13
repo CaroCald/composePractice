@@ -29,9 +29,9 @@ fun DesignSplashScreen(
             .background(
                 Brush.verticalGradient(
                     colors = listOf(
-                        Color(239, 127, 26),
-                        Color(120, 40, 140),
-                        Color(0, 47, 187),
+                        Color(255, 131, 131, 255),
+                        Color(255, 131, 131, 196),
+                        Color(172, 174, 185, 255),
                     )
                 )
             ),

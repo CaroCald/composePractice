@@ -45,7 +45,7 @@ fun ToolBarCustom(
         },
 
         colors = topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.onPrimary,
+            containerColor = MaterialTheme.colorScheme.background,
             titleContentColor = Color.White,
         ),
         title = { if(title!=null) TextCustom(text = title) }

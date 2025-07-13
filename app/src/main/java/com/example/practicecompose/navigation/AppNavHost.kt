@@ -14,6 +14,7 @@ import com.example.practicecompose.features.movies.movieDetail.MovieDetailScreen
 import com.example.practicecompose.features.movies.moviesList.MovieScreen
 import com.example.practicecompose.features.auth.profile.ProfileScreen
 import com.example.practicecompose.features.splash.SplashScreen
+import com.example.practicecompose.features.welcome.WelcomeScreen
 
 @Composable
 fun AppNavHost(
@@ -26,6 +27,9 @@ fun AppNavHost(
         navController = navController,
         startDestination = startDestination
     ) {
+        composable(NavigationItem.Welcome.route) {
+            WelcomeScreen(navController)
+        }
         composable(NavigationItem.Splash.route) {
             SplashScreen(navController)
         }
