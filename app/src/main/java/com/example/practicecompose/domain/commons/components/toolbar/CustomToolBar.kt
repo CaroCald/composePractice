@@ -29,25 +29,31 @@ fun ToolBarCustom(
             if(hasBackButton){
                 IconButton(
                     colors = IconButtonDefaults.iconButtonColors(
-                        contentColor = Color.White
+                        contentColor = MaterialTheme.colorScheme.onSurface
                     ),
                     onClick = {
                     navController.popBackStack()
                 }) {
                     Icon(
-
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Localized description",
+                        contentDescription = "Back",
                     )
                 }
             }
-
         },
-
         colors = topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.background,
-            titleContentColor = Color.White,
+            containerColor = MaterialTheme.colorScheme.surface,
+            titleContentColor = MaterialTheme.colorScheme.onSurface,
+            navigationIconContentColor = MaterialTheme.colorScheme.onSurface,
         ),
-        title = { if(title!=null) TextCustom(text = title) }
+        title = { 
+            if(title != null) {
+                TextCustom(
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = androidx.compose.ui.text.font.FontWeight.Medium
+                )
+            }
+        }
     )
 }

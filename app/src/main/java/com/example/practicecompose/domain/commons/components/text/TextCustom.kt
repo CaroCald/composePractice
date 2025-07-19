@@ -1,6 +1,5 @@
 package com.example.practicecompose.domain.commons.components.text
 
-
 import androidx.annotation.StringRes
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -11,7 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-
+import androidx.compose.ui.text.style.TextOverflow
 
 @Composable
 fun TextCustom(
@@ -21,6 +20,8 @@ fun TextCustom(
     fontWeight: FontWeight? = null,
     color: Color =  MaterialTheme.colorScheme.secondary,
     textAlign: TextAlign? = null,
+    maxLines: Int = Int.MAX_VALUE,
+    overflow: TextOverflow = TextOverflow.Clip
 ) {
     Text(
         modifier = modifier ?: Modifier,
@@ -28,7 +29,9 @@ fun TextCustom(
         style = style ,
         fontWeight = fontWeight,
         color = color,
-        textAlign = textAlign
+        textAlign = textAlign,
+        maxLines = maxLines,
+        overflow = overflow
     )
 }
 

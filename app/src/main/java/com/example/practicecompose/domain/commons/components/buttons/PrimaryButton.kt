@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.practicecompose.domain.commons.components.text.TextCustom
+import androidx.compose.foundation.shape.RoundedCornerShape
 
 
 @Composable
@@ -22,7 +23,7 @@ fun PrimaryButton(
     isEnable : Boolean = true,
     modifier: Modifier = Modifier
         .width(300.dp)
-        .height(54.dp)
+        .height(48.dp)
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -36,15 +37,16 @@ fun PrimaryButton(
         },
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.primary,
-            disabledContainerColor = MaterialTheme.colorScheme.onPrimary,
-            disabledContentColor = MaterialTheme.colorScheme.onPrimary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+            disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
         ),
+        shape = RoundedCornerShape(12.dp),
     ) {
         TextCustom(
             text =text,
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
+            fontWeight = FontWeight.Medium,
+            color = MaterialTheme.colorScheme.onPrimary,
             textAlign = TextAlign.Center
         )
     }

@@ -6,8 +6,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -25,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,6 +42,8 @@ import com.example.practicecompose.domain.commons.components.text.TextCustom
 import com.example.practicecompose.domain.commons.components.toolbar.ToolBarCustom
 import com.example.practicecompose.features.auth.AuthViewModel
 import com.example.practicecompose.navigation.NavigationItem
+import androidx.compose.foundation.background
+import androidx.compose.foundation.shape.RoundedCornerShape
 
 @Composable
 fun ProfileScreen(navHostController: NavHostController,
@@ -58,56 +63,110 @@ fun ProfileScreen(navHostController: NavHostController,
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Icon(
-                   modifier = Modifier.align(alignment = Alignment.End).clickable {
-                       authViewModel.closeSession()
-                       navHostController.navigate(route = NavigationItem.Splash.route) {
-                           popUpTo(0) // Optional: Clear back stack
-                       }
-                   },
-                    imageVector = Icons.AutoMirrored.Filled.ExitToApp,
-                    tint = Color.White,
-                    contentDescription = "Localized description",
-                )
+                // Header with logout button
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Icon(
+                        modifier = Modifier
+                            .clickable {
+                                authViewModel.closeSession()
+                                navHostController.navigate(route = NavigationItem.Splash.route) {
+                                    popUpTo(0)
+                                }
+                            }
+                            .padding(8.dp),
+                        imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        contentDescription = "Logout",
+                    )
+                }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(32.dp))
+                
                 // Profile Image
                 Image(
                     painter = painterResource(id = R.drawable.ic_profile),
                     contentDescription = "Profile Picture",
                     modifier = Modifier
-                        .size(100.dp)
+                        .size(120.dp)
                         .clip(CircleShape)
-                        .border(2.dp, MaterialTheme.colorScheme.primary, CircleShape)
+                        .border(3.dp, MaterialTheme.colorScheme.primary, CircleShape)
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
                 // User Email
                 TextCustom(
-                    text = authViewModel.detailInfoUser().email ?: "",
-                    style = MaterialTheme.typography.titleMedium,
+                    text = authViewModel.detailInfoUser().email ?: "User",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Center
                 )
 
-                // User ID
+                Spacer(modifier = Modifier.height(8.dp))
+
                 TextCustom(
-                    text = "ID: ${authViewModel.detailInfoUser().email}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(top = 4.dp)
+                    text = "Profile",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center
                 )
 
-                Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(48.dp))
 
-
+                // Profile details section
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    ProfileInfoCard(
+                        title = "Email",
+                        value = authViewModel.detailInfoUser().email ?: "Not available"
+                    )
+                    
+                    ProfileInfoCard(
+                        title = "User ID",
+                        value = authViewModel.detailInfoUser().id ?: "Not available"
+                    )
+                }
             }
-
         },
-        isLoading = false
+        isLoading = authViewModel.apiState.isLoading,
+        hasError = authViewModel.apiState.error
     )
 }
+
+@Composable
+private fun ProfileInfoCard(
+    title: String,
+    value: String
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .background(
+                color = MaterialTheme.colorScheme.surface,
+                shape = RoundedCornerShape(12.dp)
+            )
+            .padding(16.dp)
+    ) {
+        TextCustom(
+            text = title,
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        TextCustom(
+            text = value,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Medium
+        )
+    }
+}
+
 @Preview
 @Composable
 fun HomeScreenPreview() {

@@ -10,7 +10,28 @@ val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
 
-val Green =Color(0xFF42C83C)
-val White =Color(0xFFE1E1E1)
-val Grey =Color(0xFFC6C6C6)
-val DarkGrey =Color(0xFF4B4B4B)
+// Custom color palette
+val DarkBlue = Color(0xFF202C39)      // Primary dark blue
+val MediumBlue = Color(0xFF283845)    // Secondary blue
+val WarmBeige = Color(0xFFB8B08D)     // Warm beige accent
+val CreamYellow = Color(0xFFF2D492)   // Cream yellow
+val OrangeAccent = Color(0xFFF29559)  // Orange accent
+
+// Additional color variations
+val DarkBlueLight = Color(0xFF2A3A4A)  // Lighter variant of dark blue
+val MediumBlueLight = Color(0xFF344556) // Lighter variant of medium blue
+val WarmBeigeLight = Color(0xFFC4BC9A)  // Lighter variant of warm beige
+val CreamYellowLight = Color(0xFFF5DBA0) // Lighter variant of cream yellow
+val OrangeAccentLight = Color(0xFFF5A869) // Lighter variant of orange
+
+// Derived colors for better contrast and accessibility
+val White = Color(0xFFFFFFFF)
+val LightGray = Color(0xFFF8F9FA)
+val Gray = Color(0xFF6C757D)
+val DarkGray = Color(0xFF343A40)
+val Black = Color(0xFF000000)
+
+// Legacy colors for backward compatibility
+val Green = Color(0xFF34C759)
+val Grey = Gray
+val DarkGrey = DarkGray
