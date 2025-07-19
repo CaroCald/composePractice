@@ -4,14 +4,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,13 +26,36 @@ import com.example.practicecompose.domain.commons.components.buttons.PrimaryButt
 import com.example.practicecompose.domain.commons.components.input.PrimaryInput
 import com.example.practicecompose.domain.commons.components.scaffold.ScaffoldCustom
 import com.example.practicecompose.domain.commons.components.text.TextCustom
+import com.example.practicecompose.domain.commons.utils.StateUtils
 import com.example.practicecompose.features.auth.AuthViewModel
 import com.example.practicecompose.navigation.NavigationItem
 
-
 @Composable
-fun LoginScreen(navController: NavHostController,
-                authViewModel: AuthViewModel = hiltViewModel<AuthViewModel>()) {
+fun LoginScreen(
+    navController: NavHostController,
+    authViewModel: AuthViewModel = hiltViewModel<AuthViewModel>()
+) {
+    val loginState by authViewModel.loginState.collectAsState()
+    val userState by authViewModel.userState.collectAsState()
+
+    // Handle login success
+    LaunchedEffect(loginState) {
+        if (loginState is com.example.practicecompose.data.remote.ApiResult.Success) {
+            navController.navigate(NavigationItem.MovieList.route) {
+                popUpTo(NavigationItem.Login.route) { inclusive = true }
+            }
+        }
+    }
+
+    // Update API state
+    LaunchedEffect(loginState) {
+        val newApiState = StateUtils.processApiResult(
+            result = loginState,
+            onSuccess = { /* Navigation handled above */ },
+            onError = { /* Error handled by ScaffoldCustom */ }
+        )
+        authViewModel.updateApiState(newApiState)
+    }
 
     ScaffoldCustom(
         customBody = {
@@ -48,7 +74,7 @@ fun LoginScreen(navController: NavHostController,
                     TextCustom(
                         text = "Welcome Back",
                         style = MaterialTheme.typography.headlineMedium,
-                        fontWeight = androidx.compose.ui.text.font.FontWeight.Medium,
+                        fontWeight = FontWeight.Medium,
                         textAlign = TextAlign.Center
                     )
                     Spacer(modifier = Modifier.height(8.dp))
@@ -62,7 +88,6 @@ fun LoginScreen(navController: NavHostController,
 
                 // Form section
                 Column(
-                    //modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     PrimaryInput(
@@ -97,10 +122,6 @@ fun LoginScreen(navController: NavHostController,
                     }
                 )
             }
-            
-            authViewModel.EventApi(onSuccess = {
-                navController.navigate(NavigationItem.MovieList.route)
-            })
         },
         onClickError = {
             authViewModel.restoreState()

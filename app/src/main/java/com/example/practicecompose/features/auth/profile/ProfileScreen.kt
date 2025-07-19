@@ -44,10 +44,14 @@ import com.example.practicecompose.features.auth.AuthViewModel
 import com.example.practicecompose.navigation.NavigationItem
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 
 @Composable
 fun ProfileScreen(navHostController: NavHostController,
                   authViewModel: AuthViewModel = hiltViewModel<AuthViewModel>(),) {
+
+    val userState by authViewModel.userState.collectAsState()
 
     LaunchedEffect(Unit){
         authViewModel.getUserInfo()
@@ -99,7 +103,7 @@ fun ProfileScreen(navHostController: NavHostController,
 
                 // User Email
                 TextCustom(
-                    text = authViewModel.detailInfoUser().email ?: "User",
+                    text = userState.email ?: "User",
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Center
@@ -123,12 +127,12 @@ fun ProfileScreen(navHostController: NavHostController,
                 ) {
                     ProfileInfoCard(
                         title = "Email",
-                        value = authViewModel.detailInfoUser().email ?: "Not available"
+                        value = userState.email ?: "Not available"
                     )
                     
                     ProfileInfoCard(
                         title = "User ID",
-                        value = authViewModel.detailInfoUser().id ?: "Not available"
+                        value = userState.id ?: "Not available"
                     )
                 }
             }

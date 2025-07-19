@@ -17,6 +17,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -30,6 +32,7 @@ import coil.compose.AsyncImage
 import com.example.practicecompose.domain.commons.components.bottomBar.BottomNavigationBar
 import com.example.practicecompose.domain.commons.components.scaffold.ScaffoldCustom
 import com.example.practicecompose.domain.commons.components.text.TextCustom
+import com.example.practicecompose.domain.commons.utils.StateUtils
 import com.example.practicecompose.data.remote.constants.Constants
 import com.example.practicecompose.features.movies.MoviesViewModel
 import com.example.practicecompose.navigation.NavigationItem
@@ -39,17 +42,28 @@ fun MovieScreen(
     navController: NavHostController,
     moviesViewModel: MoviesViewModel = hiltViewModel()
 ) {
+    val movieState by moviesViewModel.movieState.collectAsState()
 
     LaunchedEffect(Unit) {
         moviesViewModel.fetchMovies()
+    }
+
+    // Update API state
+    LaunchedEffect(movieState) {
+        val newApiState = StateUtils.processApiResult(
+            result = movieState,
+            onSuccess = { /* Success handled in UI */ },
+            onError = { /* Error handled by ScaffoldCustom */ }
+        )
+        moviesViewModel.updateApiState(newApiState)
     }
 
     ScaffoldCustom(
         customBottomBar = { BottomNavigationBar(navController) },
         customBody = {
             Box {
-                moviesViewModel.EventApi(onSuccess = {
-                    val movieList = moviesViewModel.getResultSMovies()
+                if (movieState is com.example.practicecompose.data.remote.ApiResult.Success) {
+                    val movieList = moviesViewModel.getMoviesList()
                     if (movieList != null) {
                         Column(
                             modifier = Modifier.padding(16.dp)
@@ -61,7 +75,7 @@ fun MovieScreen(
                                 fontWeight = FontWeight.Medium,
                                 modifier = Modifier.padding(bottom = 16.dp)
                             )
-                            
+
                             LazyVerticalGrid(
                                 columns = GridCells.Fixed(2),
                                 contentPadding = PaddingValues(vertical = 8.dp),
@@ -81,9 +95,7 @@ fun MovieScreen(
                             }
                         }
                     }
-                }, onError = {
-                    // Handle error
-                })
+                }
             }
         },
         onClickError = {
