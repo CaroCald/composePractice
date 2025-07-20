@@ -69,95 +69,84 @@ fun MovieDetailScreen(
             ) 
         },
         customBody = {
-            when (movieDetailState) {
-                is com.example.practicecompose.data.remote.ApiResult.Success -> {
-                    val movieDetail = moviesVieModel.getMovieDetail()
-                    if (movieDetail != null) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .verticalScroll(rememberScrollState())
-                                .padding(16.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
+            if (movieDetailState is com.example.practicecompose.data.remote.ApiResult.Success) {
+                val movieDetail = moviesVieModel.getMovieDetail()
+                if (movieDetail != null) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState())
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        // Poster Image
+                        Card(
+                            shape = RoundedCornerShape(12.dp),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.surface
+                            )
                         ) {
-                            // Poster Image
-                            Card(
-                                shape = RoundedCornerShape(12.dp),
-                                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                                colors = CardDefaults.cardColors(
-                                    containerColor = MaterialTheme.colorScheme.surface
-                                )
-                            ) {
-                                AsyncImage(
-                                    model = Constants.POSTER_IMAGE_BASE_URL + movieDetail.posterPath,
-                                    contentDescription = "Movie poster",
-                                    contentScale = ContentScale.Crop,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(400.dp)
-                                )
-                            }
+                            AsyncImage(
+                                model = Constants.POSTER_IMAGE_BASE_URL + movieDetail.posterPath,
+                                contentDescription = "Movie poster",
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(400.dp)
+                            )
+                        }
 
-                            Spacer(modifier = Modifier.height(24.dp))
+                        Spacer(modifier = Modifier.height(24.dp))
 
-                            // Title
-                            TextCustom(
-                                text = movieDetail.title,
-                                style = MaterialTheme.typography.headlineMedium,
-                                fontWeight = FontWeight.Medium,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.padding(horizontal = 16.dp)
+                        // Title
+                        TextCustom(
+                            text = movieDetail.title,
+                            style = MaterialTheme.typography.headlineMedium,
+                            fontWeight = FontWeight.Medium,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(horizontal = 16.dp)
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        // Details (Release Date and Status)
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            DetailItem(
+                                label = "Release Date",
+                                value = movieDetail.releaseDate
                             )
 
-                            Spacer(modifier = Modifier.height(16.dp))
+                            DetailItem(
+                                label = "Status",
+                                value = movieDetail.status
+                            )
+                        }
 
-                            // Details (Release Date and Status)
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceEvenly
-                            ) {
-                                DetailItem(
-                                    label = "Release Date",
-                                    value = movieDetail.releaseDate
-                                )
-                                
-                                DetailItem(
-                                    label = "Status",
-                                    value = movieDetail.status
-                                )
-                            }
+                        Spacer(modifier = Modifier.height(32.dp))
 
-                            Spacer(modifier = Modifier.height(32.dp))
+                        // Overview
+                        Column(
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            TextCustom(
+                                text = "Overview",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Medium,
+                                modifier = Modifier.padding(bottom = 12.dp)
+                            )
 
-                            // Overview
-                            Column(
-                                modifier = Modifier.fillMaxWidth()
-                            ) {
-                                TextCustom(
-                                    text = "Overview",
-                                    style = MaterialTheme.typography.titleMedium,
-                                    fontWeight = FontWeight.Medium,
-                                    modifier = Modifier.padding(bottom = 12.dp)
-                                )
-                                
-                                TextCustom(
-                                    text = movieDetail.overview,
-                                    textAlign = TextAlign.Justify,
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
+                            TextCustom(
+                                text = movieDetail.overview,
+                                textAlign = TextAlign.Justify,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                         }
                     }
-                }
-                is com.example.practicecompose.data.remote.ApiResult.Loading -> {
-                    // Loading state handled by ScaffoldCustom
-                }
-                is com.example.practicecompose.data.remote.ApiResult.Error -> {
-                    // Error state handled by ScaffoldCustom
-                }
-                is com.example.practicecompose.data.remote.ApiResult.ErrorGeneric<*> -> {
-                    // Error state handled by ScaffoldCustom
                 }
             }
         },

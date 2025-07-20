@@ -36,8 +36,6 @@ fun LoginScreen(
     authViewModel: AuthViewModel = hiltViewModel<AuthViewModel>()
 ) {
     val loginState by authViewModel.loginState.collectAsState()
-    val userState by authViewModel.userState.collectAsState()
-
     // Handle login success
     LaunchedEffect(loginState) {
         if (loginState is com.example.practicecompose.data.remote.ApiResult.Success) {
