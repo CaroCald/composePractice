@@ -9,9 +9,9 @@ import com.example.practicecompose.data.remote.ApiResult
 import com.example.practicecompose.data.remote.models.user.UserFirebase
 import com.example.practicecompose.data.remote.models.user.UserRequest
 import com.example.practicecompose.data.remote.models.user.UserResponse
-import com.example.practicecompose.data.remote.repositories.AccountRepository
 import com.example.practicecompose.domain.entities.generics.api.GenericApiState
 import com.example.practicecompose.domain.entities.generics.viewmodel.BaseViewModel
+import com.example.practicecompose.domain.use_cases.api.AuthenticationUseCase
 import com.example.practicecompose.domain.use_cases.forms.ValidateEmailUseCase
 import com.example.practicecompose.domain.use_cases.forms.ValidatePasswordUseCase
 import com.example.practicecompose.features.auth.login.LoginEvent
@@ -25,7 +25,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val accountRepository: AccountRepository,
+    private val authenticationUseCase: AuthenticationUseCase,
     application: Application
 ): BaseViewModel(application){
 
@@ -85,7 +85,7 @@ class AuthViewModel @Inject constructor(
 
     private fun doLogin(user: UserRequest) {
         viewModelScope.launch {
-            accountRepository.doLogin(user)
+            authenticationUseCase.login(user)
                 .collect { result ->
                     _loginState.value = result
                 }
@@ -94,7 +94,7 @@ class AuthViewModel @Inject constructor(
 
     fun getUserInfo() {
         viewModelScope.launch {
-            accountRepository.getUser()
+            authenticationUseCase.getUserInfo()
                 .collect { result ->
                     _userState.value = result
                 }
@@ -103,11 +103,14 @@ class AuthViewModel @Inject constructor(
 
     fun closeSession() {
         viewModelScope.launch {
-            accountRepository.closeSession()
+            authenticationUseCase.logout()
+                .collect { result ->
+                    // Handle logout result if needed
+                }
         }
     }
 
     fun isLogged(): Boolean {
-        return accountRepository.isLogged()
+        return authenticationUseCase.isLoggedIn()
     }
 }

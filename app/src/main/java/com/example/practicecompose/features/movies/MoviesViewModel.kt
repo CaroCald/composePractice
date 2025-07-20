@@ -9,9 +9,9 @@ import com.example.practicecompose.data.remote.ApiResult
 import com.example.practicecompose.data.remote.models.movies.MovieContent
 import com.example.practicecompose.data.remote.models.movies.MovieDetailContent
 import com.example.practicecompose.data.remote.models.movies.Result
-import com.example.practicecompose.data.remote.repositories.MovieRepository
 import com.example.practicecompose.domain.entities.generics.api.GenericApiState
 import com.example.practicecompose.domain.entities.generics.viewmodel.BaseViewModel
+import com.example.practicecompose.domain.use_cases.api.MovieUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MoviesViewModel @Inject constructor(
-    private val repository: MovieRepository,
+    private val movieUseCase: MovieUseCase,
     application: Application
 ): BaseViewModel(application) {
     
@@ -53,7 +53,7 @@ class MoviesViewModel @Inject constructor(
 
     fun fetchMovies() {
         viewModelScope.launch {
-            repository.fetchMovies(context)
+            movieUseCase.fetchMovies(context)
                 .collect { result ->
                     _movieState.value = result
                 }
@@ -62,11 +62,32 @@ class MoviesViewModel @Inject constructor(
 
     fun getMovieDetail(id: String) {
         viewModelScope.launch {
-            repository.movieById(id, context)
+            movieUseCase.getMovieDetail(id, context)
                 .collect { result ->
                     _movieDetail.value = result
                 }
         }
+    }
+
+    // Business logic methods using the use case
+    fun getMoviesByGenre(genre: String): List<Result> {
+        return movieUseCase.getMoviesByGenre(getMoviesList(), genre)
+    }
+
+    fun getMoviesSortedByRating(ascending: Boolean = false): List<Result> {
+        return movieUseCase.getMoviesSortedByRating(getMoviesList(), ascending)
+    }
+
+    fun getMoviesSortedByDate(ascending: Boolean = false): List<Result> {
+        return movieUseCase.getMoviesSortedByDate(getMoviesList(), ascending)
+    }
+
+    fun searchMoviesByTitle(query: String): List<Result> {
+        return movieUseCase.searchMoviesByTitle(getMoviesList(), query)
+    }
+
+    fun getPopularMovies(threshold: Long = 1000): List<Result> {
+        return movieUseCase.getPopularMovies(getMoviesList(), threshold)
     }
 
     override fun restoreState() {
