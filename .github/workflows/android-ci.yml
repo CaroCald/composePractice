@@ -2,8 +2,9 @@ name: Android CI
 
 on:
   push:
-    tags:
-      - 'v*.*.*'
+    branches: [ main, feature/* ]
+  pull_request:
+    branches: [ main, feature/* ]
 
 jobs:
   build:
@@ -35,9 +36,40 @@ jobs:
       - name: Build Debug APK
         run: ./gradlew assembleDebug
 
-      - name: Upload Release Asset
-        uses: softprops/action-gh-release@v2
+      - name: Upload APK to Github Artifacts
+        uses: actions/upload-artifact@v3
         with:
-          files: app/build/outputs/apk/debug/app-debug.apk
+          name: app
+          path: app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Get Android version
+        id: test
+        uses: ltDino/android-get-version-action@v1.0
+        with:
+          gradlePath: app/build.gradle.kts
+      - name: Get the output
+        run: |
+          echo "The versionCode was ${{ steps.test.outputs.versionCode }}"
+          echo "The versionName was ${{ steps.test.outputs.versionName }}"
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: '${{ steps.test.outputs.versionName }}-${{ steps.test.outputs.versionCode }}'
+          release_name: 'Release version ${{ steps.test.outputs.versionName }}-${{ steps.test.outputs.versionCode}}'
+          draft: false
+          prerelease: false
+
+      - name: Upload APK to Release
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./app/build/outputs/apk/debug/app-debug.apk
+          asset_name: app-debug.apk
+          asset_content_type: application/zip
