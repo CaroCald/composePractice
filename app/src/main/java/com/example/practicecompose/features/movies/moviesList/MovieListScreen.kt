@@ -4,6 +4,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -147,6 +149,7 @@ fun MovieCard(title: String, image: String, onClicked: () -> Unit) {
     Card(
         modifier = Modifier
             .width(160.dp)
+            .height(260.dp) // Fixed height for all cards
             .clickable { onClicked() },
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(
@@ -156,18 +159,20 @@ fun MovieCard(title: String, image: String, onClicked: () -> Unit) {
             containerColor = MaterialTheme.colorScheme.surface
         )
     ) {
-        Column {
+        Column(modifier = Modifier.fillMaxSize()) {
             AsyncImage(
                 model = Constants.POSTER_IMAGE_BASE_URL + image,
                 contentDescription = "Movie poster",
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
             )
-            
             Column(
-                modifier = Modifier.padding(12.dp)
+                modifier = Modifier
+                    .padding(12.dp)
+                    .fillMaxWidth()
+                    .weight(1f, fill = true) // Take up remaining space
             ) {
                 TextCustom(
                     text = title,
@@ -175,7 +180,6 @@ fun MovieCard(title: String, image: String, onClicked: () -> Unit) {
                     fontWeight = FontWeight.Medium,
                     textAlign = TextAlign.Start,
                     maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
                 )
             }
         }
