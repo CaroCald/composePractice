@@ -2,9 +2,8 @@ name: Android CI
 
 on:
   push:
-    branches: [ main, feature/* ]
-  pull_request:
-    branches: [ main, feature/* ]
+    tags:
+      - 'v*.*.*'
 
 jobs:
   build:
@@ -36,8 +35,9 @@ jobs:
       - name: Build Debug APK
         run: ./gradlew assembleDebug
 
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+      - name: Upload Release Asset
+        uses: softprops/action-gh-release@v2
         with:
-          name: app-debug-apk
-          path: app/build/outputs/apk/debug/app-debug.apk 
+          files: app/build/outputs/apk/debug/app-debug.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
