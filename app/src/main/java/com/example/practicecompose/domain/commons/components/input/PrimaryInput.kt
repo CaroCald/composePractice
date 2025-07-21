@@ -62,14 +62,17 @@ fun PrimaryInput(
                 )
             }
         },
-        shape = RoundedCornerShape(40.dp),
+        shape = RoundedCornerShape(12.dp),
         colors = TextFieldDefaults.colors(
-            focusedTextColor = MaterialTheme.colorScheme.secondary,
-            unfocusedTextColor = MaterialTheme.colorScheme.secondary,
-            focusedIndicatorColor =  Color.Transparent,
-            disabledIndicatorColor = Color.Transparent,
-            focusedContainerColor = MaterialTheme.colorScheme.onPrimary,
-            unfocusedContainerColor = MaterialTheme.colorScheme.background,
+            focusedTextColor = MaterialTheme.colorScheme.onSurface,
+            unfocusedTextColor = MaterialTheme.colorScheme.onSurface,
+            focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+            unfocusedIndicatorColor = MaterialTheme.colorScheme.outline,
+            disabledIndicatorColor = MaterialTheme.colorScheme.outline,
+            focusedContainerColor = MaterialTheme.colorScheme.surface,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+            focusedLabelColor = MaterialTheme.colorScheme.primary,
+            unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
         ),
         visualTransformation = if (showPassword || !isPassword) {
             VisualTransformation.None
@@ -82,7 +85,8 @@ fun PrimaryInput(
                     IconButton(onClick = { showPassword = false }) {
                         Icon(
                             imageVector = Icons.Filled.Visibility,
-                            contentDescription = "hide_password"
+                            contentDescription = "hide_password",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 } else {
@@ -90,7 +94,8 @@ fun PrimaryInput(
                         onClick = { showPassword = true }) {
                         Icon(
                             imageVector = Icons.Filled.VisibilityOff,
-                            contentDescription = "hide_password"
+                            contentDescription = "hide_password",
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }

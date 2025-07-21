@@ -1,20 +1,17 @@
 package com.example.practicecompose.features.auth
 
 import android.app.Application
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
-import baseEventApi
 import com.example.practicecompose.data.remote.ApiResult
 import com.example.practicecompose.data.remote.models.user.UserFirebase
 import com.example.practicecompose.data.remote.models.user.UserRequest
 import com.example.practicecompose.data.remote.models.user.UserResponse
-import com.example.practicecompose.data.remote.repositories.AccountRepository
 import com.example.practicecompose.domain.entities.generics.api.GenericApiState
 import com.example.practicecompose.domain.entities.generics.viewmodel.BaseViewModel
+import com.example.practicecompose.domain.use_cases.api.AuthenticationUseCase
 import com.example.practicecompose.domain.use_cases.forms.ValidateEmailUseCase
 import com.example.practicecompose.domain.use_cases.forms.ValidatePasswordUseCase
 import com.example.practicecompose.features.auth.login.LoginEvent
@@ -28,15 +25,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val accountRepository: AccountRepository,
+    private val authenticationUseCase: AuthenticationUseCase,
     application: Application
 ): BaseViewModel(application){
 
     private val _loginState = MutableStateFlow<ApiResult<UserResponse>>(ApiResult.Loading(false))
-    private var loginState: StateFlow<ApiResult<UserResponse>> = _loginState.asStateFlow()
+    val loginState: StateFlow<ApiResult<UserResponse>> = _loginState.asStateFlow()
 
     private val _userState = MutableStateFlow(UserFirebase())
-    private val userState: StateFlow<UserFirebase> = _userState.asStateFlow()
+    val userState: StateFlow<UserFirebase> = _userState.asStateFlow()
 
     private val validateEmailUseCase = ValidateEmailUseCase()
     private val validatePasswordUseCase = ValidatePasswordUseCase()
@@ -49,7 +46,6 @@ class AuthViewModel @Inject constructor(
             is LoginEvent.EmailChanged -> {
                 formState = formState.copy(email = event.email)
                 validateForm()
-
             }
             is LoginEvent.PasswordChanged -> {
                 formState = formState.copy(password = event.password)
@@ -63,20 +59,14 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    @Composable
-    fun EventApi(onSuccess: () -> Unit){
-        val event by loginState.collectAsState()
-        apiState = baseEventApi(event =event , onSuccess = {
-            onSuccess()
-        }, onError = {
-
-        })
+    fun updateApiState(newState: GenericApiState) {
+        apiState = newState
     }
 
     override fun restoreState() {
         formState = LoginState()
         apiState = GenericApiState()
-        loginState= MutableStateFlow<ApiResult<UserResponse>>(ApiResult.Error(Throwable()))
+        _loginState.value = ApiResult.Error(Throwable())
     }
 
     private fun validateForm(): Boolean {
@@ -95,33 +85,32 @@ class AuthViewModel @Inject constructor(
 
     private fun doLogin(user: UserRequest) {
         viewModelScope.launch {
-            accountRepository.doLogin(user)
+            authenticationUseCase.login(user)
                 .collect { result ->
                     _loginState.value = result
                 }
         }
     }
+
     fun getUserInfo() {
         viewModelScope.launch {
-            accountRepository.getUser()
+            authenticationUseCase.getUserInfo()
                 .collect { result ->
                     _userState.value = result
                 }
         }
     }
 
-    @Composable
-    fun detailInfoUser(): UserFirebase {
-        val userState by userState.collectAsState()
-        return userState
-    }
-
     fun closeSession() {
         viewModelScope.launch {
-            accountRepository.closeSession()
+            authenticationUseCase.logout()
+                .collect { result ->
+                    // Handle logout result if needed
+                }
         }
     }
+
     fun isLogged(): Boolean {
-        return accountRepository.isLogged()
+        return authenticationUseCase.isLoggedIn()
     }
 }

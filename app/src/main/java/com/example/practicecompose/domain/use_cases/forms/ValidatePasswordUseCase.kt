@@ -9,17 +9,12 @@ class ValidatePasswordUseCase : BaseUseCase<String, ValidationResult> {
         if (input.isBlank()) {
             return ValidationResult(
                 successful = false,
-                errorMessage = UiText.StringResource(resId = R.string.strThePasswordNeedsToConsistOfAtLeastEightCharacters),
+                errorMessage = UiText.StringResource(resId = R.string.strThePasswordNeedsToConsistOfAtLeastEightCharacters)
             )
         }
         return ValidationResult(
             successful = true,
             errorMessage = null
         )
-    }
-
-    private fun isPasswordValid(password: String): Boolean {
-        return password.any { it.isDigit() } &&
-                password.any { it.isLetter() }
     }
 }

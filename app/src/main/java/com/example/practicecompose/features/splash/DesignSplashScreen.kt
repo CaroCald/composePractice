@@ -8,12 +8,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 
@@ -29,20 +31,24 @@ fun DesignSplashScreen(
             .background(
                 Brush.verticalGradient(
                     colors = listOf(
-                        Color(255, 131, 131, 255),
-                        Color(255, 131, 131, 196),
-                        Color(172, 174, 185, 255),
+                        MaterialTheme.colorScheme.background,
+                        MaterialTheme.colorScheme.surface,
+                        MaterialTheme.colorScheme.surface
                     )
                 )
             ),
         contentAlignment = Alignment.Center
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = androidx.compose.foundation.layout.Arrangement.Center
+        ) {
             Image(
                 painter = imagePainter,
-                contentDescription = "",
+                contentDescription = "App Logo",
+                colorFilter = ColorFilter.tint(Color.White) ,// Add this line
                 modifier = modifier
-                    .size(400.dp)
+                    .size(120.dp)
                     .scale(scale = scaleAnimation.value),
             )
         }
