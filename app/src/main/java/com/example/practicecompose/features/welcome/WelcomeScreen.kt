@@ -67,14 +67,7 @@ fun WelcomeScreen(navController: NavController) {
                 )
             }
 
-            // Get started button
-            PrimaryButton(
-                text = "Get Started",
-                onClick = {
-                    navController.navigate(route = NavigationItem.Login.route)
-                },
-                modifier = Modifier.width(200.dp)
-            )
+
         }
 
         // Bottom arrow indicator
@@ -89,7 +82,7 @@ fun WelcomeScreen(navController: NavController) {
         ) {
             TextCustom(
                 text = stringResource(R.string.title_welcome),
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Spacer(modifier = Modifier.width(8.dp))

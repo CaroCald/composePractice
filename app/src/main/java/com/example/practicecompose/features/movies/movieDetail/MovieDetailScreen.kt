@@ -90,7 +90,7 @@ fun MovieDetailScreen(
                             AsyncImage(
                                 model = Constants.POSTER_IMAGE_BASE_URL + movieDetail.posterPath,
                                 contentDescription = "Movie poster",
-                                contentScale = ContentScale.Crop,
+                                contentScale = ContentScale.Fit,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(400.dp)
